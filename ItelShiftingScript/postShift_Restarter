@@ -1,0 +1,243 @@
+#!/bin/bash
+script="postShift_Restarter"
+author_name="# Mirza Golam Abbas Shahneel"
+version="# 1.0.2"
+modified="# Modified_27012017_0148";
+lastModifications="
+Tomcat Restarter added
+"
+
+localPath='/usr/local'
+resourcePath='/usr/local/src/ServiceShifting'
+listofshift="$resourcePath/listofshift"
+logWrtng="/home/postShifting.log"
+logDate=$(date +%Y_%m_%d_%H_%M_%S)
+declare -a partitionServices=(iTelSwitchPlusMediaProxy iTelSwitchPlusSignaling);
+
+
+
+function strTer()
+{
+	rnFile="run*.sh"
+	shtFile="shut*.sh"
+	cd $localPath/$srvStart
+	sh $shtFile >>$logWrtng 2>&1
+	sh $shtFile >>$logWrtng 2>&1
+	sh $shtFile >>$logWrtng 2>&1
+	mv $logFile $logFile$logDate >>$logWrtng 2>&1
+	sh $rnFile >>$logWrtng 2>&1
+	sleep 2
+	declare -i waiter=1
+	while [ $waiter -le 30 ];do
+		wTime=$(( waiter*1 ))
+		if grep -q "$startStatus" $logFile; then
+			serviceStartFlag=1
+		else
+			echo -ne " $srvStart did not start in last $wTime sec."'\r'
+			serviceStartFlag=0
+			if [ $waiter -eq 30 ];then
+				echo -e "Do you want to wait more 30 sec to check status?(y/n) "
+				read waitMore
+				if [[ "$waitMore" == "y" ]];then
+					waiter=0
+				elif [[ "$waitMore" == "n" ]];then
+					break
+				fi
+			else
+				sleep 1
+			fi
+		fi
+		waiter=$waiter+1
+	done
+	if [ $serviceStartFlag -eq 1 ];then
+		echo -e "${Green}$srvStart Started Successfully  ${NC}"
+	elif [ $serviceStartFlag -eq 0 ];then
+		echo -e "${BRed}$srvStart did not start Still now! Please check Status Manually!!! ${NC}"
+	fi
+}
+
+function srvcStarter(){
+for srvStart in $(cat $listofshift); do
+	if [[ $srvStart =~ ^BalanceServer ]];then
+		echo "$srvStart";
+		logFile='balance.log'
+		startStatus='Started Successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^ByteSaverMediaProxy ]];then
+		echo "$srvStart";
+		logFile='MediaProxy.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^ByteSaverSignalConverter ]];then
+		echo "$srvStart";
+		logFile='SignalingProxy.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^DiskSpaceChecker ]];then
+		echo "$srvStart";
+		logFile='DiskSpaceChecker.log'
+		startStatus='Started Successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^IPChanger ]];then
+		echo "$srvStart";
+		logFile='IPChanger.log'
+		startStatus='Started Successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^iTelAppsServer ]] || [[ $srvStart =~ ^SMS_Server ]];then
+		echo "$srvStart";
+		logFile='iTelApps.log'
+		startStatus='Started Successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^iTelDataBackupshah9il ]];then
+		echo "$srvStart";
+		logFile='iTelDataBackup.log'
+		startStatus='Started Successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^iTelAutoSignUp ]];then
+		echo "$srvStart";
+		logFile='iTelAutoSignUp.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^MobileBilling ]];then
+		echo "$srvStart";
+		logFile='mobilebiling.log'
+		startStatus='Server started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^TopUpServer ]];then
+		echo "$srvStart";
+		logFile='server.log'
+		startStatus='Started Successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^iTelSwitchPlusSignaling ]];then
+		echo "$srvStart";
+		logFile='iTelSwitchPlusSignaling.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^iTelSwitchPlusMediaProxy ]];then
+		echo "$srvStart";
+		logFile='iTelSwitchPlusMediaProxy.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^DBHealthChecker ]];then
+		echo "$srvStart";
+		logFile='DBHealthChecker.log'
+		startStatus='Started Successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^PushSender ]];then
+		echo "$srvStart";
+		logFile='pushNotificationSender.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^PaymentServers ]] || [[ $srvStart =~ ^CreditCardServer ]];then
+		echo "$srvStart";
+		logFile='PaymentServer.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^MoneyTransfer ]];then
+		echo "$srvStart";
+		logFile='MoneyTransfer.log'
+		startStatus='started successfully';
+
+		strTer;
+	elif [[ $srvStart =~ ^SwitchInstaller ]];then
+		echo "$srvStart";
+		logFile='radius.log'
+		startStatus='Request receiver started';
+
+		strTer;
+	elif [[ $srvStart =~ ^iTelBilling ]];then
+		for partServIces in ${partitionServices[@]};do
+			#echo $partServIces;
+			mainsrvStart=$srvStart
+			srvStart=$srvStart/$partServIces;
+			echo "$srvStart";
+			if [[ $partServIces =~ ^iTelSwitchPlusMediaProxy ]];then
+				logFile="iTelSwitchPlusMediaProxy.log"
+			elif [[ $partServIces =~ ^iTelSwitchPlusSignaling ]];then
+				logFile="iTelSwitchPlusSignaling.log"
+			fi
+			startStatus="started successfully";
+			strTer;
+			srvStart=$mainsrvStart
+		done
+	else
+		echo "$srvStart";
+		echo -e "$($logDate) Please restart this service manually" #>>$logWrtng 2>&1;
+		echo -e "$($logDate) Please restart this service manually" >>$logWrtng 2>&1;
+	fi
+done
+
+
+jktLoc=$(find /usr/local/ -name jakarta-tomcat* | grep -m 1 /usr/local/jakarta)
+
+if [ -z $jktLoc ];then
+	echo "No Tomcat Found"
+else
+	srvStart='tomcat';
+	logFile="$jktLoc/logs/catalina.out"
+	startStatus='Server startup';
+
+	`service $srvStart stop > /dev/null 2>&1`
+	sleep 6
+	declare -i Tprocess_id=`/bin/ps -fu $USER| grep "jakarta-tomcat" | grep -v "grep" | awk '{print $2}'`
+		if [ -z $Tprocess_id ];then
+			Tprocess_id=`pgrep -f "jakarta-tomcat"`
+		fi
+		if [ $Tprocess_id -gt 0 ];then
+			`service $srvStart stop > /dev/null 2>&1`
+			sleep 7
+			`kill -9 $Tprocess_id > /dev/null 2>&1`
+			`pkill -f "jakarta-tomcat" > /dev/null 2>&1`
+		fi
+	`rm -rf /usr/local/jakarta-tomcat-5.0.27/work/Catalina`
+	`rm -rf /usr/local/jakarta-tomcat-7.0.61/work/Catalina`
+	`echo 1 > /proc/sys/vm/drop_caches`
+	`service $srvStart start > /dev/null 2>&1`
+
+	sleep 2
+	declare -i waiter=1
+	while [ $waiter -le 30 ];do
+		wTime=$(( waiter*1 ))
+		if grep -q "$startStatus" $logFile; then
+			serviceStartFlag=1
+		else
+			echo -ne "$srvStart did not start in last $wTime sec."'\r'
+			serviceStartFlag=0
+			if [ $waiter -eq 30 ];then
+				echo -e "Do you want to wait more 30 sec to check status?(y/n) "
+				read waitMore
+				if [[ "$waitMore" == "y" ]];then
+					waiter=0
+				elif [[ "$waitMore" == "n" ]];then
+					break
+				fi
+			else
+				sleep 1
+			fi
+		fi
+		waiter=$waiter+1
+	done
+	if [ $serviceStartFlag -eq 1 ];then
+		echo -e "${Green}$srvStart Started Successfully  ${NC}"
+	elif [ $serviceStartFlag -eq 0 ];then
+		echo -e "${BRed}$srvStart did not start Still now! Please check Status Manually!!! ${NC}"
+	fi
+fi
+
+}
+srvcStarter;
