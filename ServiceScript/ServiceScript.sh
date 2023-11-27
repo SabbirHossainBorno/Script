@@ -198,7 +198,7 @@ authenticate
         # Define the function for shutting down and restarting iTelSwitchPlusSignaling
         restart_iTelSwitchPlusSignaling() {
             echo
-            echo -e "${BPurple}iTelSwitchPlusSignaling Shutting Down--->${Color_Off}"
+            echo -e "${BPurple}iTelSwitchPlusSignaling Shutting Down ->${Color_Off}"
             echo
 
             local log_file="/usr/local/iTelSwitchPlusSignaling$sname/iTelSwitchPlusSignaling.log"
@@ -222,7 +222,6 @@ authenticate
             shutdown_time=$(grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}' "$log_file" | tail -n 1)
             
             if [[ -n "$shutdown_time" ]]; then
-                echo
                 echo -e "${BRed}$shutdown_time${Color_Off}${BCyan} Signaling${Color_Off} ${BYellow}Shutting Down${Color_Off} Successfully.${Color_Off}"
                 echo
             else
@@ -231,8 +230,92 @@ authenticate
                 echo
             fi
 
+
+
+
+
+
+
+
+            # Read the port from the configuration file
+            config_file="/usr/local/iTelSwitchPlusSignaling$sname/config/server.cfg"
+            if [ -f "$config_file" ]; then
+                signaling_port=$(grep -oP 'orgBindPort\s*=\s*\K\d+' "$config_file")
+            else
+                echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
+                echo
+                exit 1
+            fi
+
+            # Find all process IDs associated with the signaling port
+            signaling_pids=($(lsof -t -i :$signaling_port))
+
+            if [ ${#signaling_pids[@]} -eq 0 ]; then
+                echo -e "${BICyan}No Process Found ON Port : ${Color_Off}${BIRed}$signaling_port${Color_Off}"
+                echo
+                echo -e "${BIYellow}Signaling${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
+                echo
+            elif [ ${#signaling_pids[@]} -eq 1 ]; then
+                pid_to_kill="${signaling_pids[0]}"
+                echo -e "${BICyan}Found 1 Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off} ${BICyan}On Port :${Color_Off} ${BIRed}$signaling_port${Color_Off}"
+                echo
+                echo -e "${BICyan}Now Killing It${Color_Off}"
+                echo
+                kill "$pid_to_kill"
+                attempt=1
+                while ps -p "$pid_to_kill" > /dev/null; do
+                    echo -e "${BIYellow}Attempt $attempt:${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                    echo
+                    echo -e "${BICyan}Retrying${Color_Off}"
+                    echo
+                    kill -9 "$pid_to_kill"  # Forcefully kill
+                    sleep 1
+                    attempt=$((attempt + 1))
+                done
+                echo -e "${BIYellow}Signaling${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
+                echo
+            else
+                echo -e "${BICyan}Multiple Processes Found ON Port :${Color_Off} ${BIRed}$signaling_port${Color_Off} ${BICyan}With PIDs :${Color_Off} ${BIRed}${signaling_pids[@]}${Color_Off}"
+                echo
+
+                # Ask the user to choose a PID to kill
+                echo -e "${BIGreen}Choose A PID To Kill : ${Color_Off}"
+                echo
+                select pid_to_kill in "${signaling_pids[@]}"; do
+                    if [ -n "$pid_to_kill" ]; then
+                        echo -e "${BICyan}You Selected To Kill Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off}"
+                        echo
+                        kill "$pid_to_kill"
+                        attempt=1
+                        while ps -p "$pid_to_kill" > /dev/null; do
+                            echo -e "${BIYellow}Attempt $attempt :${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                            echo
+                            echo -e "${BICyan}Retrying${Color_Off}"
+                            echo
+                            kill -9 "$pid_to_kill"  # Forcefully kill
+                            sleep 1
+                            attempt=$((attempt + 1))
+                        done
+                        echo -e "${BIYellow}Signaling${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
+                        echo
+                        break
+                    else
+                        echo -e "${BIYellow}Invalid Choice. Please Select A Valid PID${Color_Off}"
+                        echo
+                    fi
+                done
+            fi
+
+
+
+
+
+
+
+
+
             sed -i 's/^registrationDebug=.*/registrationDebug=no/' /usr/local/iTelSwitchPlusSignaling$sname/config/server.cfg
-            echo
+
             echo -e "${BBlue}Updated RegistrationDebug To 'NO' In (server.cfg)${Color_Off}"
             echo
 
@@ -255,7 +338,6 @@ authenticate
                 new_lines=$(tail -n +"$start_line" "$log_file")
                 if echo "$new_lines" | grep -Fq "started successfully"; then
                     start_time=$(echo "$new_lines" | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}' | tail -n 1)
-                    echo
                     echo -e "${BRed}$start_time${Color_Off}${BCyan} Signaling Started${Color_Off}${BGreen} Successfully.${Color_Off}"
                     echo
                     break
@@ -274,7 +356,7 @@ authenticate
         # Define the function for shutting down and restarting iTelSwitchPlusMediaProxy
         restart_iTelSwitchPlusMediaProxy() {
             echo
-            echo -e "${BPurple}iTelSwitchPlusMediaProxy Shutting Down--->${Color_Off}"
+            echo -e "${BPurple}iTelSwitchPlusMediaProxy Shutting Down ->${Color_Off}"
             
             local log_file="/usr/local/iTelSwitchPlusMediaProxy$sname/iTelSwitchPlusMediaProxy.log"
 
@@ -307,6 +389,84 @@ authenticate
                 echo
             fi
 
+
+
+
+
+
+            # Read the port from the configuration file
+            config_file="/usr/local/iTelSwitchPlusMediaProxy$sname/rtpProperties.cfg"
+            if [ -f "$config_file" ]; then
+                media_port=$(grep -oP 'localListenPort\s*=\s*\K\d+' "$config_file")
+            else
+                echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
+                echo
+                exit 1
+            fi
+
+            # Find all process IDs associated with the Media port
+            media_pids=($(lsof -t -i :$media_port))
+
+            if [ ${#media_pids[@]} -eq 0 ]; then
+                echo -e "${BICyan}No Process Found ON Port : ${Color_Off}${BIRed}$media_port${Color_Off}"
+                echo
+                echo -e "${BIYellow}Media Proxy${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
+                echo
+            elif [ ${#media_pids[@]} -eq 1 ]; then
+                pid_to_kill="${media_pids[0]}"
+                echo -e "${BICyan}Found 1 Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off} ${BICyan}On Port :${Color_Off} ${BIRed}$media_port${Color_Off}"
+                echo
+                echo -e "${BICyan}Now Killing It${Color_Off}"
+                echo
+                kill "$pid_to_kill"
+                attempt=1
+                while ps -p "$pid_to_kill" > /dev/null; do
+                    echo -e "${BIYellow}Attempt $attempt:${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                    echo
+                    echo -e "${BICyan}Retrying${Color_Off}"
+                    echo
+                    kill -9 "$pid_to_kill"  # Forcefully kill
+                    sleep 1
+                    attempt=$((attempt + 1))
+                done
+                echo -e "${BIYellow}Media Proxy${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
+                echo
+            else
+                echo -e "${BICyan}Multiple Processes Found ON Port :${Color_Off} ${BIRed}$media_port${Color_Off} ${BICyan}With PIDs :${Color_Off} ${BIRed}${media_pids[@]}${Color_Off}"
+                echo
+
+                # Ask the user to choose a PID to kill
+                echo -e "${BIGreen}Choose A PID To Kill : ${Color_Off}"
+                echo
+                select pid_to_kill in "${media_pids[@]}"; do
+                    if [ -n "$pid_to_kill" ]; then
+                        echo -e "${BICyan}You Selected To Kill Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off}"
+                        echo
+                        kill "$pid_to_kill"
+                        attempt=1
+                        while ps -p "$pid_to_kill" > /dev/null; do
+                            echo -e "${BIYellow}Attempt $attempt :${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                            echo
+                            echo -e "${BICyan}Retrying${Color_Off}"
+                            echo
+                            kill -9 "$pid_to_kill"  # Forcefully kill
+                            sleep 1
+                            attempt=$((attempt + 1))
+                        done
+                        echo -e "${BIYellow}Media Proxy${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
+                        echo
+                        break
+                    else
+                        echo -e "${BIYellow}Invalid Choice. Please Select A Valid PID${Color_Off}"
+                        echo
+                    fi
+                done
+            fi
+
+
+
+
+
             # Restart the application
             nohup sh /usr/local/iTelSwitchPlusMediaProxy$sname/runiTelSwitchPlusMediaProxy.sh >> /dev/null 2>&1 &
             
@@ -315,8 +475,8 @@ authenticate
                 new_lines=$(tail -n +"$start_line" "$log_file")
                 if echo "$new_lines" | grep -Fq "started successfully"; then
                     start_time=$(echo "$new_lines" | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}' | tail -n 1)
-                    echo
                     echo -e "${BRed}$start_time${Color_Off}${BCyan} Media Proxy Started${Color_Off} ${BGreen}Successfully.${Color_Off}"
+                    echo
                     echo
                     break
                 fi
@@ -332,7 +492,7 @@ authenticate
 
         # Define the function for shutting down and restarting ByteSaverSignaling
         restart_ByteSaverSignaling() {
-            echo -e "${BPurple}ByteSaverSignalingConverter Shutting Down--->${Color_Off}"
+            echo -e "${BPurple}ByteSaverSignalingConverter Shutting Down ->${Color_Off}"
             
             # Get the current line number in the log
             start_line=$(wc -l < "/usr/local/ByteSaverSignalConverter$opcode/SignalingProxy.log")
@@ -347,6 +507,88 @@ authenticate
             echo -e "${BBlue}Updated Debug To '0' In (server.cfg)${Color_Off}"
             echo
 
+
+
+
+
+
+
+            # Read the port from the configuration file
+            config_file="/usr/local/ByteSaverSignalConverter$opcode/server.cfg"
+            if [ -f "$config_file" ]; then
+                signaling_port=$(grep -oP 'dialerBindPort\s*=\s*\K\d+' "$config_file")
+            else
+                echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
+                echo
+                exit 1
+            fi
+
+            # Find all process IDs associated with the Signaling port
+            signaling_pids=($(lsof -t -i :$signaling_port))
+
+            if [ ${#signaling_pids[@]} -eq 0 ]; then
+                echo -e "${BICyan}No Process Found ON Port : ${Color_Off}${BIRed}$signaling_port${Color_Off}"
+                echo
+                echo -e "${BICyan}SignalingConverter${Color_Off} ${BIYellow}Stopped${Color_Off} ${BIGreen}Successfully${Color_Off}"
+                echo
+            elif [ ${#signaling_pids[@]} -eq 1 ]; then
+                pid_to_kill="${signaling_pids[0]}"
+                echo -e "${BICyan}Found 1 Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off} ${BICyan}On Port :${Color_Off} ${BIRed}$signaling_port${Color_Off}"
+                echo
+                echo -e "${BICyan}Now Killing It${Color_Off}"
+                echo
+                kill "$pid_to_kill"
+                attempt=1
+                while ps -p "$pid_to_kill" > /dev/null; do
+                    echo -e "${BIYellow}Attempt $attempt:${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                    echo
+                    echo -e "${BICyan}Retrying${Color_Off}"
+                    echo
+                    kill -9 "$pid_to_kill"  # Forcefully kill
+                    sleep 1
+                    attempt=$((attempt + 1))
+                done
+                echo -e "${BICyan}SignalingConverter${Color_Off} ${BIYellow}Stopped${Color_Off} ${BIGreen}Successfully${Color_Off}"
+                echo
+            else
+                echo -e "${BICyan}Multiple Processes Found ON Port :${Color_Off} ${BIRed}$signaling_port${Color_Off} ${BICyan}With PIDs :${Color_Off} ${BIRed}${signaling_pids[@]}${Color_Off}"
+                echo
+
+                # Ask the user to choose a PID to kill
+                echo -e "${BIGreen}Choose A PID To Kill : ${Color_Off}"
+                echo
+                select pid_to_kill in "${signaling_pids[@]}"; do
+                    if [ -n "$pid_to_kill" ]; then
+                        echo -e "${BICyan}You Selected To Kill Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off}"
+                        echo
+                        kill "$pid_to_kill"
+                        attempt=1
+                        while ps -p "$pid_to_kill" > /dev/null; do
+                            echo -e "${BIYellow}Attempt $attempt :${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                            echo
+                            echo -e "${BICyan}Retrying${Color_Off}"
+                            echo
+                            kill -9 "$pid_to_kill"  # Forcefully kill
+                            sleep 1
+                            attempt=$((attempt + 1))
+                        done
+                        echo -e "${BICyan}SignalingConverter${Color_Off} ${BIYellow}Stopped${Color_Off} ${BIGreen}Successfully${Color_Off}"
+                        echo
+                        break
+                    else
+                        echo -e "${BIYellow}Invalid Choice. Please Select A Valid PID${Color_Off}"
+                        echo
+                    fi
+                done
+            fi
+
+
+
+
+
+
+
+
             nohup sh "/usr/local/ByteSaverSignalConverter$opcode/runByteSaverSignalConverter.sh" >> /dev/null 2>&1 &
             sleep 8
             
@@ -358,7 +600,6 @@ authenticate
 
             # Check shutdown status
             if grep -Fq "shutting down successfully" "$temp_log"; then
-                echo
                 echo -e "${BCyan}SignalingConverter${Color_Off} ${BYellow}Shutting Down${Color_Off} ${BGreen}Successfully.${Color_Off}"
                 sleep 2
                 echo
@@ -371,7 +612,7 @@ authenticate
             
             # Check start status
             if grep -Fq "started successfully" "$temp_log"; then
-                echo -e "${BCyan}SignalingConverter Started${Color_Off} ${BGreen}Successfully.${Color_Off}"
+                echo -e "${BCyan}SignalingConverter${Color_Off} ${BYellow}Started${Color_Off} ${BGreen}Successfully.${Color_Off}"
                 echo
             else
                 echo -e "${BRed}SignalingConverter Didn't Start.${Color_Off}"
@@ -384,7 +625,9 @@ authenticate
 
         # Define the function for shutting down and restarting ByteSaverMediaProxy
         restart_ByteSaverMediaProxy() {
-            echo -e "${BPurple}ByteSaverMediaProxy Shutting Down--->${Color_Off}"
+            echo
+            echo -e "${BPurple}ByteSaverMediaProxy Shutting Down ->${Color_Off}"
+            echo
 
             local log_file="/usr/local/ByteSaverMediaProxy$opcode/MediaProxy.log"
             
@@ -395,6 +638,84 @@ authenticate
                 sh /usr/local/ByteSaverMediaProxy$opcode/shutdownByteSaverMediaProxy.sh >> /dev/null
                 #sleep 2
             done
+
+
+
+
+
+            # Read the port from the configuration file
+            config_file="/usr/local/ByteSaverMediaProxy$opcode/rtpProperties.cfg"
+            if [ -f "$config_file" ]; then
+                media_port=$(grep -oP 'localListenPort\s*=\s*\K\d+' "$config_file")
+            else
+                echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
+                echo
+                exit 1
+            fi
+
+            # Find all process IDs associated with the Media port
+            media_pids=($(lsof -t -i :$media_port))
+
+            if [ ${#media_pids[@]} -eq 0 ]; then
+                echo -e "${BICyan}No Process Found ON Port : ${Color_Off}${BIRed}$media_port${Color_Off}"
+                echo
+                echo -e "${BICyan}MediaProxy${Color_Off} ${BIYellow}Stopped${Color_Off} ${BIGreen}Successfully${Color_Off}"
+                echo
+            elif [ ${#media_pids[@]} -eq 1 ]; then
+                pid_to_kill="${media_pids[0]}"
+                echo -e "${BICyan}Found 1 Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off} ${BICyan}On Port :${Color_Off} ${BIRed}$media_port${Color_Off}"
+                echo
+                echo -e "${BICyan}Now Killing It${Color_Off}"
+                echo
+                kill "$pid_to_kill"
+                attempt=1
+                while ps -p "$pid_to_kill" > /dev/null; do
+                    echo -e "${BIYellow}Attempt $attempt:${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                    echo
+                    echo -e "${BICyan}Retrying${Color_Off}"
+                    echo
+                    kill -9 "$pid_to_kill"  # Forcefully kill
+                    sleep 1
+                    attempt=$((attempt + 1))
+                done
+                echo -e "${BICyan}MediaProxy${Color_Off} ${BIYellow}Stopped${Color_Off} ${BIGreen}Successfully${Color_Off}"
+                echo
+            else
+                echo -e "${BICyan}Multiple Processes Found ON Port :${Color_Off} ${BIRed}$media_port${Color_Off} ${BICyan}With PIDs :${Color_Off} ${BIRed}${media_pids[@]}${Color_Off}"
+                echo
+
+                # Ask the user to choose a PID to kill
+                echo -e "${BIGreen}Choose A PID To Kill : ${Color_Off}"
+                echo
+                select pid_to_kill in "${media_pids[@]}"; do
+                    if [ -n "$pid_to_kill" ]; then
+                        echo -e "${BICyan}You Selected To Kill Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off}"
+                        echo
+                        kill "$pid_to_kill"
+                        attempt=1
+                        while ps -p "$pid_to_kill" > /dev/null; do
+                            echo -e "${BIYellow}Attempt $attempt :${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
+                            echo
+                            echo -e "${BICyan}Retrying${Color_Off}"
+                            echo
+                            kill -9 "$pid_to_kill"  # Forcefully kill
+                            sleep 1
+                            attempt=$((attempt + 1))
+                        done
+                        echo -e "${BICyan}MediaProxy${Color_Off} ${BIYellow}Stopped${Color_Off} ${BIGreen}Successfully${Color_Off}"
+                        echo
+                        break
+                    else
+                        echo -e "${BIYellow}Invalid Choice. Please Select A Valid PID${Color_Off}"
+                        echo
+                    fi
+                done
+            fi
+
+
+
+
+
 
             nohup sh /usr/local/ByteSaverMediaProxy$opcode/runByteSaverMediaProxy.sh >> /dev/null 2>&1 &
             sleep 5
@@ -407,12 +728,10 @@ authenticate
                         
             # Check shutdown status
             if grep -Fq "shutting down successfully" "$temp_log"; then
-                echo
                 echo -e "${BCyan}MediaProxy${Color_Off} ${BYellow}Shutting Down${Color_Off} ${BGreen}Successfully.${Color_Off}"
                 sleep 2
                 echo
             else
-                echo
                 echo -e "${BRed}MediaProxy Not ${BYellow}shutting Down${Color_Off}.${Color_Off}"
                 sleep 2
                 echo
@@ -420,7 +739,8 @@ authenticate
             
             # Check start status
             if grep -Fq "started successfully" "$temp_log"; then
-                echo -e "${BCyan}MediaProxy Started${Color_Off} ${BGreen}Successfully.${Color_Off}"
+                echo -e "${BCyan}MediaProxy${Color_Off} ${BIYellow}Started${Color_Off} ${BGreen}Successfully.${Color_Off}"
+                echo
                 echo
             else
                 echo -e "${BRed}MediaProxy Didn't Start.${Color_Off}"
