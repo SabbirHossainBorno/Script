@@ -78,12 +78,12 @@ On_IWhite='\033[0;107m'   # White          |
 
 devloper_INFO() {
 echo
-echo -e "${BIRed}SERVICE SCRIPT(3.0.4)${Color_Off}"
+echo -e "${BIRed}SERVICE SCRIPT(3.0.3)${Color_Off}"
 echo -e "${BIYellow}*-----------------------------------------------------------------------*${Color_Off}"
 echo -e "${BRed}TODAY                : ${Color_Off}${BYellow}`date +"%d-%m-%Y"` ${Color_Off}"
-echo -e "${BRed}LAST UPDATE          : ${Color_Off}${BYellow}01-12-2023 ${Color_Off}"
-echo -e "${BRed}PREVIOUS IMPLEMENTED : ${Color_Off}${BYellow}Delete All Deleted PINs(Only) ${Color_Off}"
-echo -e "${BRed}LAST IMPLEMENTED     : ${Color_Off}${BYellow}Delete All Deleted Data ${Color_Off}"
+echo -e "${BRed}LAST UPDATE          : ${Color_Off}${BYellow}22-10-2023 ${Color_Off}"
+echo -e "${BRed}PREVIOUS IMPLEMENTED : ${Color_Off}${BYellow}ByteSaver Registration Check ${Color_Off}"
+echo -e "${BRed}LAST IMPLEMENTED     : ${Color_Off}${BYellow}Delete All Deleted PINs(Only)${Color_Off}"
 echo -e "${BIYellow}*-----------------------------------------------------------------------*${Color_Off}"
 echo -e "${BRed}IMPLEMENTED BY MD. SABBIR HOSSAIN BORNO ${Color_Off}"
 echo -e "${BRed}SOFTWARE SUPPORT ENGINEER ${Color_Off}"
@@ -93,58 +93,6 @@ echo
 
 # Call the function
 devloper_INFO
-#--------------------------------------------------------FINISH-------------------------------------------------------
-
-#-------------------------------------------------------ScriptMenu-------------------------------------------------------
-
-ScriptMenu() {
-echo
-echo -e "*${BCyan}-------------------------${Color_Off}${URed}RESTART${Color_Off}${BCyan}-------------------------${Color_Off}*"
-echo -e "*${BIPurple}Which Service Do You Want To Restart???${Color_Off}                  *"
-echo -e "*${BBlue}[1]${Color_Off}--------${BGreen}ByteSaver${Color_Off}                                     *"
-echo -e "*${BBlue}[BS]${Color_Off}${White}----------${Color_Off}${BYellow}SingnalingCoverter${Color_Off}                         *"
-echo -e "*${BBlue}[BM]${Color_Off}${White}----------${Color_Off}${BYellow}MediaProxy${Color_Off}                                 *"
-echo -e "*${BBlue}[2]${Color_Off}--------${BGreen}iTelSwitchPlus${Color_Off}                                *"
-echo -e "*${BBlue}[SS]${Color_Off}${White}----------${Color_Off}${BYellow}Singnaling${Color_Off}                                 *"
-echo -e "*${BBlue}[SM]${Color_Off}${White}----------${Color_Off}${BYellow}MediaProxy${Color_Off}                                 *"
-echo -e "*${BBlue}[3]${Color_Off}--------${BGreen}Jakarta  - Tomcat[7]${Color_Off}                          *"
-echo -e "*${BBlue}[T9]${Color_Off}-------${BGreen}Jakarta  - Tomcat[9]${Color_Off}                          *"
-echo -e "*${BBlue}[4]${Color_Off}--------${BGreen}Apache   - Tomcat${Color_Off}                             *"
-echo -e "*${BBlue}[5]${Color_Off}--------${BGreen}All Services Restart${Color_Off}                          *"
-echo -e "*${BBlue}[SBC]${Color_Off}------${BGreen}SBC All Services Restart${Color_Off}                      *"
-echo -e "*${BBlue}[HR]${Color_Off}-------${BGreen}Hard Restart${Color_Off}                                  *"
-echo -e "*${BCyan}-------------------------${Color_Off}${URed}CHECK${Color_Off}${BCyan}---------------------------${Color_Off}*"
-echo -e "*${BIPurple}What You Wnat To Check???${Color_Off}                                *"
-echo -e "*${BBlue}[6]${Color_Off}--------${BGreen}Memory check${Color_Off}                                  *"
-echo -e "*${BBlue}[7]${Color_Off}--------${BGreen}HDD Check${Color_Off}                                     *"
-echo -e "*${BBlue}[8]${Color_Off}--------${BGreen}CPU Usage Check${Color_Off}                               *"
-echo -e "*${BBlue}[9]${Color_Off}--------${BGreen}Running Call Check${Color_Off}                            *"
-echo -e "*${BBlue}[10]${Color_Off}-------${BGreen}Running Proccess Check${Color_Off}                        *"
-echo -e "*${BCyan}---------------------${Color_Off}${URed}SERVICE PERFORM${Color_Off}${BCyan}---------------------${Color_Off}*"
-echo -e "*${BIPurple}What Service Do You Want To Perform???${Color_Off}                   *"
-echo -e "*${BBlue}[11]${Color_Off}-------${BGreen}Memory Free${Color_Off}                                   *"
-echo -e "*${BBlue}[12]${Color_Off}-------${BGreen}HDD Space Reduce${Color_Off}                              *"
-echo -e "*${BBlue}[13]${Color_Off}-------${BGreen}Billing Password Change${Color_Off}                       *"
-echo -e "*${BBlue}[14]${Color_Off}-------${BGreen}Max Call Limite Change${Color_Off}                        *"
-echo -e "*${BBlue}[15]${Color_Off}-------${BGreen}Pin Expire Time${Color_Off}                               *"
-echo -e "*${BBlue}[16]${Color_Off}-------${BGreen}DiskSpaceChecker Modification${Color_Off}                 *"
-echo -e "*${BBlue}[SST]${Color_Off}------${BGreen}Service Stop${Color_Off}                                  *"
-echo -e "*${BBlue}[BRC]${Color_Off}------${BGreen}ByteSaver Registration Check${Color_Off}                  *"
-echo -e "*${BBlue}[17]${Color_Off}-------${BGreen}Delete All Deleted Data${Color_Off}                       *"
-echo -e "*${BBlue}[18]${Color_Off}-------${BGreen}Delete All Deleted PINs(Only)${Color_Off}                 *"
-echo -e "*${BCyan}------------------------${Color_Off}${URed}Installer${Color_Off}${BCyan}------------------------${Color_Off}*"
-echo -e "*${BBlue}[I]${Color_Off}--------${BGreen}All Installer${Color_Off}                                 *"
-echo -e "*${BCyan}-------------------------${Color_Off}${BRed}******${Color_Off}${BCyan}--------------------------${Color_Off}*"
-echo -e "${BCyan}--------------------${Color_Off}${BIPurple}PRESS [e] FOR EXIT${Color_Off}${BCyan}---------------------${Color_Off}"
-echo 
-echo -e "${BCyan}---------------${Color_Off}${BIPurple}PRESS [SH] FOR SERVER HEALTH${Color_Off}${BCyan}----------------${Color_Off}"
-echo
-echo -e "${BCyan}-----------${Color_Off}${BIPurple}PRESS [SCON] FOR SERVER CONFIGURATION${Color_Off}${BCyan}-----------${Color_Off}"
-echo
-echo -e "${BCyan}PRESS & ENTER PLEASE:${Color_Off} " 
-echo
-}
-
 #--------------------------------------------------------FINISH-------------------------------------------------------
 
 #-----------------------------------------------------Authenticate-------------------------------------------------------
@@ -281,6 +229,14 @@ authenticate
                 echo -e "${BRed}Signaling Shut Down Unsuccessful.${Color_Off}"
                 echo
             fi
+
+
+
+
+
+
+
+
             # Read the port from the configuration file
             config_file="/usr/local/iTelSwitchPlusSignaling$sname/config/server.cfg"
             if [ -f "$config_file" ]; then
@@ -349,6 +305,14 @@ authenticate
                     fi
                 done
             fi
+
+
+
+
+
+
+
+
 
             sed -i 's/^registrationDebug=.*/registrationDebug=no/' /usr/local/iTelSwitchPlusSignaling$sname/config/server.cfg
 
@@ -424,6 +388,12 @@ authenticate
                 echo -e "${BRed}Media Proxy Shut Down Unsuccessful.${Color_Off}"
                 echo
             fi
+
+
+
+
+
+
             # Read the port from the configuration file
             config_file="/usr/local/iTelSwitchPlusMediaProxy$sname/rtpProperties.cfg"
             if [ -f "$config_file" ]; then
@@ -493,6 +463,10 @@ authenticate
                 done
             fi
 
+
+
+
+
             # Restart the application
             nohup sh /usr/local/iTelSwitchPlusMediaProxy$sname/runiTelSwitchPlusMediaProxy.sh >> /dev/null 2>&1 &
             
@@ -532,6 +506,13 @@ authenticate
             echo
             echo -e "${BBlue}Updated Debug To '0' In (server.cfg)${Color_Off}"
             echo
+
+
+
+
+
+
+
             # Read the port from the configuration file
             config_file="/usr/local/ByteSaverSignalConverter$opcode/server.cfg"
             if [ -f "$config_file" ]; then
@@ -601,6 +582,13 @@ authenticate
                 done
             fi
 
+
+
+
+
+
+
+
             nohup sh "/usr/local/ByteSaverSignalConverter$opcode/runByteSaverSignalConverter.sh" >> /dev/null 2>&1 &
             sleep 8
             
@@ -650,6 +638,10 @@ authenticate
                 sh /usr/local/ByteSaverMediaProxy$opcode/shutdownByteSaverMediaProxy.sh >> /dev/null
                 #sleep 2
             done
+
+
+
+
 
             # Read the port from the configuration file
             config_file="/usr/local/ByteSaverMediaProxy$opcode/rtpProperties.cfg"
@@ -719,6 +711,11 @@ authenticate
                     fi
                 done
             fi
+
+
+
+
+
 
             nohup sh /usr/local/ByteSaverMediaProxy$opcode/runByteSaverMediaProxy.sh >> /dev/null 2>&1 &
             sleep 5
@@ -1100,75 +1097,8 @@ authenticate
                 echo -e "${BRed}Signaling Shut Down Unsuccessful.${Color_Off}"
                 echo
             fi
-
-            # Read the port from the configuration file
-            config_file="/usr/local/iTelSwitchPlusSignaling$sname/config/server.cfg"
-            if [ -f "$config_file" ]; then
-                signaling_port=$(grep -oP 'orgBindPort\s*=\s*\K\d+' "$config_file")
-            else
-                echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
-                echo
-                exit 1
-            fi
-
-            # Find all process IDs associated with the signaling port
-            signaling_pids=($(lsof -t -i :$signaling_port))
-
-            if [ ${#signaling_pids[@]} -eq 0 ]; then
-                echo -e "${BICyan}No Process Found ON Port : ${Color_Off}${BIRed}$signaling_port${Color_Off}"
-                echo
-                echo -e "${BIYellow}Signaling${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
-                echo
-            elif [ ${#signaling_pids[@]} -eq 1 ]; then
-                pid_to_kill="${signaling_pids[0]}"
-                echo -e "${BICyan}Found 1 Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off} ${BICyan}On Port :${Color_Off} ${BIRed}$signaling_port${Color_Off}"
-                echo
-                echo -e "${BICyan}Now Killing It${Color_Off}"
-                echo
-                kill "$pid_to_kill"
-                attempt=1
-                while ps -p "$pid_to_kill" > /dev/null; do
-                    echo -e "${BIYellow}Attempt $attempt:${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
-                    echo
-                    echo -e "${BICyan}Retrying${Color_Off}"
-                    echo
-                    kill -9 "$pid_to_kill"  # Forcefully kill
-                    sleep 1
-                    attempt=$((attempt + 1))
-                done
-                echo -e "${BIYellow}Signaling${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
-                echo
-            else
-                echo -e "${BICyan}Multiple Processes Found ON Port :${Color_Off} ${BIRed}$signaling_port${Color_Off} ${BICyan}With PIDs :${Color_Off} ${BIRed}${signaling_pids[@]}${Color_Off}"
-                echo
-
-                # Ask the user to choose a PID to kill
-                echo -e "${BIGreen}Choose A PID To Kill : ${Color_Off}"
-                echo
-                select pid_to_kill in "${signaling_pids[@]}"; do
-                    if [ -n "$pid_to_kill" ]; then
-                        echo -e "${BICyan}You Selected To Kill Process With PID :${Color_Off} ${BIRed}$pid_to_kill${Color_Off}"
-                        echo
-                        kill "$pid_to_kill"
-                        attempt=1
-                        while ps -p "$pid_to_kill" > /dev/null; do
-                            echo -e "${BIYellow}Attempt $attempt :${Color_Off} ${BIRed}Failed To Kill The Process With PID :${Color_Off} ${BIYellow}$pid_to_kill${Color_Off}"
-                            echo
-                            echo -e "${BICyan}Retrying${Color_Off}"
-                            echo
-                            kill -9 "$pid_to_kill"  # Forcefully kill
-                            sleep 1
-                            attempt=$((attempt + 1))
-                        done
-                        echo -e "${BIYellow}Signaling${Color_Off} ${BIGreen}Successfully Stopped${Color_Off}"
-                        echo
-                        break
-                    else
-                        echo -e "${BIYellow}Invalid Choice. Please Select A Valid PID${Color_Off}"
-                        echo
-                    fi
-                done
-            fi
+            ps aux | grep -v grep | grep 'iTelSwitchPlusSignaling' --color=auto
+            echo
             echo
         }
 
@@ -1247,7 +1177,50 @@ list_DBHC=$(cd /usr/local/ && ls | grep -e DBHealthChecker | sed 's/DBHealthChec
 timeout_duration=60  # Timeout in seconds
 
 while true; do
-    ScriptMenu
+echo
+echo -e "*${BCyan}-------------------------${Color_Off}${URed}RESTART${Color_Off}${BCyan}-------------------------${Color_Off}*"
+echo -e "*${BIPurple}Which Service Do You Want To Restart???${Color_Off}                  *"
+echo -e "*${BBlue}[1]${Color_Off}--------${BGreen}ByteSaver${Color_Off}                                     *"
+echo -e "*${BBlue}[BS]${Color_Off}${White}----------${Color_Off}${BYellow}SingnalingCoverter${Color_Off}                         *"
+echo -e "*${BBlue}[BM]${Color_Off}${White}----------${Color_Off}${BYellow}MediaProxy${Color_Off}                                 *"
+echo -e "*${BBlue}[2]${Color_Off}--------${BGreen}iTelSwitchPlus${Color_Off}                                *"
+echo -e "*${BBlue}[SS]${Color_Off}${White}----------${Color_Off}${BYellow}Singnaling${Color_Off}                                 *"
+echo -e "*${BBlue}[SM]${Color_Off}${White}----------${Color_Off}${BYellow}MediaProxy${Color_Off}                                 *"
+echo -e "*${BBlue}[3]${Color_Off}--------${BGreen}Jakarta  - Tomcat[7]${Color_Off}                          *"
+echo -e "*${BBlue}[T9]${Color_Off}-------${BGreen}Jakarta  - Tomcat[9]${Color_Off}                          *"
+echo -e "*${BBlue}[4]${Color_Off}--------${BGreen}Apache   - Tomcat${Color_Off}                             *"
+echo -e "*${BBlue}[5]${Color_Off}--------${BGreen}All Services Restart${Color_Off}                          *"
+echo -e "*${BBlue}[SBC]${Color_Off}------${BGreen}SBC All Services Restart${Color_Off}                      *"
+echo -e "*${BBlue}[HR]${Color_Off}-------${BGreen}Hard Restart${Color_Off}                                  *"
+echo -e "*${BCyan}-------------------------${Color_Off}${URed}CHECK${Color_Off}${BCyan}---------------------------${Color_Off}*"
+echo -e "*${BIPurple}What You Wnat To Check???${Color_Off}                                *"
+echo -e "*${BBlue}[6]${Color_Off}--------${BGreen}Memory check${Color_Off}                                  *"
+echo -e "*${BBlue}[7]${Color_Off}--------${BGreen}HDD Check${Color_Off}                                     *"
+echo -e "*${BBlue}[8]${Color_Off}--------${BGreen}CPU Usage Check${Color_Off}                               *"
+echo -e "*${BBlue}[9]${Color_Off}--------${BGreen}Running Call Check${Color_Off}                            *"
+echo -e "*${BBlue}[10]${Color_Off}-------${BGreen}Running Proccess Check${Color_Off}                        *"
+echo -e "*${BCyan}---------------------${Color_Off}${URed}SERVICE PERFORM${Color_Off}${BCyan}---------------------${Color_Off}*"
+echo -e "*${BIPurple}What Service Do You Want To Perform???${Color_Off}                   *"
+echo -e "*${BBlue}[11]${Color_Off}-------${BGreen}Memory Free${Color_Off}                                   *"
+echo -e "*${BBlue}[12]${Color_Off}-------${BGreen}HDD Space Reduce${Color_Off}                              *"
+echo -e "*${BBlue}[13]${Color_Off}-------${BGreen}Billing Password Change${Color_Off}                       *"
+echo -e "*${BBlue}[14]${Color_Off}-------${BGreen}Max Call Limite Change${Color_Off}                        *"
+echo -e "*${BBlue}[15]${Color_Off}-------${BGreen}Pin Expire Time${Color_Off}                               *"
+echo -e "*${BBlue}[16]${Color_Off}-------${BGreen}DiskSpaceChecker Modification${Color_Off}                 *"
+echo -e "*${BBlue}[SST]${Color_Off}------${BGreen}Service Stop${Color_Off}                                  *"
+echo -e "*${BBlue}[BRC]${Color_Off}------${BGreen}ByteSaver Registration Check${Color_Off}                  *"
+echo -e "*${BBlue}[17]${Color_Off}-------${BGreen}Delete All Deleted PINs(Only)${Color_Off}                 *"
+echo -e "*${BCyan}------------------------${Color_Off}${URed}Installer${Color_Off}${BCyan}------------------------${Color_Off}*"
+echo -e "*${BBlue}[I]${Color_Off}--------${BGreen}All Installer${Color_Off}                                 *"
+echo -e "*${BCyan}-------------------------${Color_Off}${BRed}******${Color_Off}${BCyan}--------------------------${Color_Off}*"
+echo -e "${BCyan}--------------------${Color_Off}${BIPurple}PRESS [e] FOR EXIT${Color_Off}${BCyan}---------------------${Color_Off}"
+echo 
+echo -e "${BCyan}---------------${Color_Off}${BIPurple}PRESS [SH] FOR SERVER HEALTH${Color_Off}${BCyan}----------------${Color_Off}"
+echo
+echo -e "${BCyan}-----------${Color_Off}${BIPurple}PRESS [SCON] FOR SERVER CONFIGURATION${Color_Off}${BCyan}-----------${Color_Off}"
+echo
+echo -e "${BCyan}PRESS & ENTER PLEASE:${Color_Off} " 
+echo
 
     read -t $timeout_duration option || true
     echo
@@ -3509,223 +3482,6 @@ while true; do
             ;;
             #---------------------------------------------------------Finish--------------------------------------------------------
         17)
-            #---------------------------------------------------DeleteDeletedData---------------------------------------------------
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BCyan}Service--${Color_Off}${BRed}(Delete All Deteled Data)${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-            echo -e "${BIRed}N.B: [ vbClient | vbClientDetails | vbPin | vbGtway | vbRatePlan | vbDestinationRatePlan ]${Color_Off}"
-            echo
-            sleep 1
-            echo -e "${BGreen}iTelBilling List ${Color_Off}"
-            echo
-            cd /usr/local/jakarta-tomcat-7.0.61/webapps/ && ls
-            echo
-
-            echo -e ${BGreen}"Enter Billing Name : ${Color_Off}"
-
-            read billingname
-            echo
-
-            #cat /usr/local/jakarta-tomcat-7.0.61/webapps/$billingname/WEB-INF/classes/*.xml
-            iTelBillingDB=$(grep -o 'jdbc:mysql:///[^?"]*' "/usr/local/jakarta-tomcat-7.0.61/webapps/$billingname/WEB-INF/classes/DatabaseConnection.xml" | sed -e 's/.*\/\/\([^?]*\)/\1/')
-            echo -e "${BCyan}iTelBilling Database Name:${Color_Off} ${BRed}"$iTelBillingDB"${Color_Off}"
-            echo
-            echo -e "${BGreen}Put The Database Name Here : ${Color_Off}"
-            read dbname
-            echo        
-
-            SQL_QUERY1="SELECT COUNT(*) FROM vbClient WHERE clIsDeleted = '1';"
-            vbClient_deleted_client_count=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY1")
-            echo -e "${BYellow}Total Deleted Clients In vbClient Table :${Color_Off} ${BRed}$vbClient_deleted_client_count${Color_Off}"
-            echo
-
-            SQL_QUERY2="SELECT COUNT(*) from vbClientDetails WHERE cdIsDeleted = '1';"
-            vbClientDetails_deleted_client_count=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY2")
-            echo -e "${BYellow}Total Deleted Clients In vbClientDetails Table :${Color_Off} ${BRed}$vbClientDetails_deleted_client_count${Color_Off}"
-            echo
-
-            SQL_QUERY3="SELECT COUNT(*) from vbPin WHERE pinIsDeleted = '1';"
-            vbPin_deleted_pins_count=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY3")
-            echo -e "${BYellow}Total Deleted PINs In vbPin Table :${Color_Off} ${BRed}$vbPin_deleted_pins_count${Color_Off}"
-            echo
-
-            SQL_QUERY4="SELECT COUNT(*) FROM vbGtway WHERE gtIsDeleted = '1';"
-            vbGtway_deleted_gateway_count=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY4")
-            echo -e "${BYellow}Total Deleted Gateway In vbGtway Table :${Color_Off} ${BRed}$vbGtway_deleted_gateway_count${Color_Off}"
-            echo
-
-            SQL_QUERY5="SELECT COUNT(*) FROM vbRatePlan WHERE rpIsDeleted = '1';;"
-            vbRatePlan_deleted_rateplans_count=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY5")
-            echo -e "${BYellow}Total Deleted Rateplans In vbRatePlan Table :${Color_Off} ${BRed}$vbRatePlan_deleted_rateplans_count${Color_Off}"
-            echo
-
-            SQL_QUERY6="SELECT COUNT(*) FROM vbDestinationRatePlan WHERE drpIsDeleted ='1';"
-            vbDestinationRatePlan_deleted_rateplans_count=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY6")
-            echo -e "${BYellow}Total Deleted Rateplans In vbDestinationRatePlan Table :${Color_Off} ${BRed}$vbDestinationRatePlan_deleted_rateplans_count${Color_Off}"
-            echo
-
-            # Function to check if a Backup Table exists
-            BK_table_exists() {
-                local vbClient="vbClient_`date +"%Y%m%d"`"
-                local vbClientDetails="vbClientDetails_`date +"%Y%m%d"`"
-                local vbPin="vbPin_`date +"%Y%m%d"`"
-                local vbGtway="vbGtway_`date +"%Y%m%d"`"
-                local vbRatePlan="vbRatePlan_`date +"%Y%m%d"`"
-                local vbDestinationRatePlan="vbDestinationRatePlan_`date +"%Y%m%d"`"
-
-                
-                local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbClient'")
-                if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbClient_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "ALTER TABLE vbClient_`date +"%Y%m%d"` RENAME vbClient_`date +"%Y%m%d"`_2;"
-                    echo -e "${BICyan}Re-Naming Existing Backup Table : vbClient_`date +"%Y%m%d"`_2 ${Color_off}"
-                    echo
-                else
-                    return 1  # Table does not exist
-                fi
-
-                local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbClientDetails'")
-                if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbClientDetails_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "ALTER TABLE vbClientDetails_`date +"%Y%m%d"` RENAME vbClientDetails_`date +"%Y%m%d"`_2;"
-                    echo -e "${BICyan}Re-Naming Existing Backup Table : vbClientDetails_`date +"%Y%m%d"`_2 ${Color_off}"
-                    echo
-                else
-                    return 1  # Table does not exist
-                fi
-
-                local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbPin'")
-                if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbPin_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "ALTER TABLE vbPin_`date +"%Y%m%d"` RENAME vbPin_`date +"%Y%m%d"`_2;"
-                    echo -e "${BICyan}Re-Naming Existing Backup Table : vbPin_`date +"%Y%m%d"`_2 ${Color_off}"
-                    echo
-                else
-                    return 1  # Table does not exist
-                fi
-
-                local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbGtway'")
-                if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbGtway_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "ALTER TABLE vbGtway_`date +"%Y%m%d"` RENAME vbGtway_`date +"%Y%m%d"`_2;"
-                    echo -e "${BICyan}Re-Naming Existing Backup Table : vbGtway_`date +"%Y%m%d"`_2 ${Color_off}"
-                    echo
-                else
-                    return 1  # Table does not exist
-                fi
-
-                local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbRatePlan'")
-                if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbRatePlan_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "ALTER TABLE vbRatePlan_`date +"%Y%m%d"` RENAME vbRatePlan_`date +"%Y%m%d"`_2;"
-                    echo -e "${BICyan}Re-Naming Existing Backup Table : vbRatePlan_`date +"%Y%m%d"`_2 ${Color_off}"
-                    echo
-                else
-                    return 1  # Table does not exist
-                fi
-
-                local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbDestinationRatePlan'")
-                if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbDestinationRatePlan_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "ALTER TABLE vbDestinationRatePlan_`date +"%Y%m%d"` RENAME vbDestinationRatePlan_`date +"%Y%m%d"`_2;"
-                    echo -e "${BICyan}Re-Naming Existing Backup Table : vbDestinationRatePlan_`date +"%Y%m%d"`_2 ${Color_off}"
-                    echo
-                else
-                    return 1  # Table does not exist
-                fi
-            }
-
-            BK_table_exists
-
-            echo -e "${BCyan}Taking Backup Of vbPin, vbClient, vbClientDetails, vbGtway, vbRatePlan, vbDestinationRatePlan Table${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "CREATE TABLE vbClient_`date +"%Y%m%d"` LIKE vbClient; INSERT INTO vbClient_`date +"%Y%m%d"` (SELECT * FROM vbClient);"
-            echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbClient_`date +"%Y%m%d"`${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "CREATE TABLE vbClientDetails_`date +"%Y%m%d"` LIKE vbClientDetails; INSERT INTO vbClientDetails_`date +"%Y%m%d"` (SELECT * FROM vbClientDetails);"
-            echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbClientDetails_`date +"%Y%m%d"`${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "CREATE TABLE vbPin_`date +"%Y%m%d"` LIKE vbPin; INSERT INTO vbPin_`date +"%Y%m%d"` (SELECT * FROM vbPin);"
-            echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbPin_`date +"%Y%m%d"`${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "CREATE TABLE vbGtway_`date +"%Y%m%d"` LIKE vbGtway; INSERT INTO vbGtway_`date +"%Y%m%d"` (SELECT * FROM vbGtway);"
-            echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbGtway_`date +"%Y%m%d"`${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "CREATE TABLE vbRatePlan_`date +"%Y%m%d"` LIKE vbRatePlan; INSERT INTO vbRatePlan_`date +"%Y%m%d"` (SELECT * FROM vbRatePlan);"
-            echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbRatePlan_`date +"%Y%m%d"`${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "CREATE TABLE vbDestinationRatePlan_`date +"%Y%m%d"` LIKE vbDestinationRatePlan; INSERT INTO vbDestinationRatePlan_`date +"%Y%m%d"` (SELECT * FROM vbDestinationRatePlan);"
-            echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbDestinationRatePlan_`date +"%Y%m%d"`${Color_Off}"
-            echo
-
-
-            echo -e "${BCyan}Deleteing All Deleted Data From vbPin, vbClient, vbClientDetails, vbGtway, vbRatePlan, vbDestinationRatePlan Table${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "delete from vbClient where clIsDeleted = '1';"
-            echo -e "${BYellow}Delete All Deleted Clients From${Color_Off} ${BRed}vbClient${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "delete from vbClientDetails where cdIsDeleted = '1';"
-            echo -e "${BYellow}Delete All Deleted Clients From${Color_Off} ${BRed}vbClientDetails${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "delete from vbPin where pinIsDeleted = '1';"
-            echo -e "${BYellow}Delete All Deleted PINs From${Color_Off} ${BRed}vbPin${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "delete from vbGtway where gtIsDeleted = '1';"
-            echo -e "${BYellow}Delete All Deleted Gateway From${Color_Off} ${BRed}vbGtway${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "delete from vbRatePlan where rpIsDeleted = '1';"
-            echo -e "${BYellow}Delete All Deleted Rateplans From${Color_Off} ${BRed}vbRatePlan${Color_Off}"
-            echo
-            mysql -u root --force -D $dbname -e "delete from vbDestinationRatePlan where drpIsDeleted ='1';"
-            echo -e "${BYellow}Delete All Deleted Rateplans From${Color_Off} ${BRed}vbDestinationRatePlan${Color_Off}"
-            echo
-            
-            sleep 3
-
-            echo -e "${BGreen}Want To Restart iTelSwitch & Tomcat? [y/n] ${Color_Off}"
-            read choice 
-            echo
-
-            if [[ $choice == y ]]
-            then
-            
-            #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*iTelSwitchRestart*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(iTelSwitchPlus Signaling)${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-            echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
-            echo "$list_itelSwitch"
-            echo
-            echo -e "${BGreen}Enter iTelSwitchPlus Name: ${Color_Off}"
-            read sname
-            echo            
-            restart_iTelSwitchPlusSignaling
-            #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*JakartaTomcatRestart*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(Jakarta - Tomcat)${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-            restart_jakartaTomcat7
-            echo
-            else 
-            echo -e "${BRed}Need to Restart iTelSwitch & Tomcat Manually${Color_Off}"
-            echo
-            fi
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BBlue}                            FINISH                         ${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-            ;;
-            #---------------------------------------------------------Finish--------------------------------------------------------
-        18)
             #-------------------------------------------------------ServiceStop-----------------------------------------------------
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Service--${Color_Off}${BRed}(Delete All Deteled PIN (ONLY))${Color_Off}"
