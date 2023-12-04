@@ -74,31 +74,16 @@ On_ICyan='\033[0;106m'    # Cyan           |
 On_IWhite='\033[0;107m'   # White          |
 #------------------------------------------|
 
-NB() {
-echo
-echo -e "${BIYellow}*|_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_|*${Color_Off}"
-echo
-echo -e "${BIRed}              UNDER MAINTANANCE               ${Color_Off}"
-echo
-echo -e "${BIRed}         SORRY FOR THE INCONVENIENT           ${Color_Off}"
-echo
-echo -e "${BIYellow}*|_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_|*${Color_Off}"
-echo
-}
-
-
-
-
 #-----------------------------------------------------DEVINFO-------------------------------------------------------
 
 devloper_INFO() {
 echo
-echo -e "${BIRed}SERVICE SCRIPT(3.0.5)${Color_Off}"
+echo -e "${BIRed}SERVICE SCRIPT(3.0.4)${Color_Off}"
 echo -e "${BIYellow}*-----------------------------------------------------------------------*${Color_Off}"
 echo -e "${BRed}TODAY                : ${Color_Off}${BYellow}`date +"%d-%m-%Y"` ${Color_Off}"
 echo -e "${BRed}LAST UPDATE          : ${Color_Off}${BYellow}01-12-2023 ${Color_Off}"
-echo -e "${BRed}PREVIOUS IMPLEMENTED : ${Color_Off}${BYellow}Delete All Deleted Data ${Color_Off}"
-echo -e "${BRed}LAST IMPLEMENTED     : ${Color_Off}${BYellow}Introduce Multiple Entry For Restart ${Color_Off}"
+echo -e "${BRed}PREVIOUS IMPLEMENTED : ${Color_Off}${BYellow}Delete All Deleted PINs(Only) ${Color_Off}"
+echo -e "${BRed}LAST IMPLEMENTED     : ${Color_Off}${BYellow}Delete All Deleted Data ${Color_Off}"
 echo -e "${BIYellow}*-----------------------------------------------------------------------*${Color_Off}"
 echo -e "${BRed}IMPLEMENTED BY MD. SABBIR HOSSAIN BORNO ${Color_Off}"
 echo -e "${BRed}SOFTWARE SUPPORT ENGINEER ${Color_Off}"
@@ -108,7 +93,6 @@ echo
 
 # Call the function
 devloper_INFO
-#NB
 #--------------------------------------------------------FINISH-------------------------------------------------------
 
 #-------------------------------------------------------ScriptMenu-------------------------------------------------------
@@ -304,7 +288,7 @@ authenticate
             else
                 echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
                 echo
-                return 1
+                exit 1
             fi
 
             # Find all process IDs associated with the signaling port
@@ -447,7 +431,7 @@ authenticate
             else
                 echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
                 echo
-                return 1
+                exit 1
             fi
 
             # Find all process IDs associated with the Media port
@@ -555,7 +539,7 @@ authenticate
             else
                 echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
                 echo
-                return 1
+                exit 1
             fi
 
             # Find all process IDs associated with the Signaling port
@@ -674,7 +658,7 @@ authenticate
             else
                 echo -e "${BIRed}Configuration File Not Found!${Color_Off}"
                 echo
-                return 1
+                exit 1
             fi
 
             # Find all process IDs associated with the Media port
@@ -1034,79 +1018,55 @@ authenticate
         # Define the function for deleteing log file for services
         delete_serviceLog() {
             echo
-            echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
+            if [[ -z "$opcode" ]];
+            then
+            echo -e "${BRed}Skiping ByteSaver Log Delete Process....${Color_Off}"
             echo
-            if [[ ${#opcode_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping Bytesaver Log Delete Process${Color_Off}"
-                echo
-                echo -e "${BRed}No Operator Codes Entered${Color_Off}"
-                echo
-                echo
             else
-                for opcode in "${opcode_array[@]}"; do
-                    echo -e "${BCyan}Deleting ByteSaver Log File${Color_Off}"
-                    echo
-                    echo -e "${BYellow}Operator Code :${Color_Off} ${BRed}$opcode ${Color_Off}"
-                    echo
-                    echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
-                    echo
+            echo -e "${BYellow}Deleting ByteSaver Log File ${Color_Off}"
+            echo
+            cd /usr/local/ByteSaverSignalConverter$opcode/
+            rm -f SignalingProxy.log.*
+            cd /usr/local/ByteSaverSignalConverter$opcode/logs/
+            rm -rf `date "+%Y"`*
+            cd /usr/local/ByteSaverMediaProxy$opcode/
+            rm -f MediaProxy.log.*
+            cd /usr/local/ByteSaverMediaProxy$opcode/logs/
+            rm -rf `date "+%Y"`*
+            echo -e "${BRed}Deleted ByteSaver Log File Done. ${Color_Off}"
 
-                    # Delete ByteSaver Signal log files
-                    cd "/usr/local/ByteSaverSignalConverter$opcode/" && rm -f SignalingProxy.log.*
-
-                    # Delete ByteSaver Signal log directories
-                    cd "/usr/local/ByteSaverSignalConverter$opcode/logs/" && rm -rf "$(date "+%Y")"*
-
-                    # Delete ByteSaver Media log files
-                    cd "/usr/local/ByteSaverMediaProxy$opcode/" && rm -f MediaProxy.log.*
-
-                    # Delete ByteSaver Media log directories
-                    cd "/usr/local/ByteSaverMediaProxy$opcode/logs/" && rm -rf "$(date "+%Y")"*
-
-                    # Update debug to '0' in bytesaver server.cfg file
-                    sed -i 's/^debug=.*/debug=0/' "/usr/local/ByteSaverSignalConverter$opcode/server.cfg"
-                    echo -e "${BBlue}Updated Debug To '0' In (server.cfg) ->${Color_Off} ${BRed}[$opcode]${Color_Off}"
-                    echo
-                    echo -e "${BRed}Deleted ByteSaver Log File ${BYellow}[$opcode]${Color_Off} ${BGreen}Done${Color_Off}"
-                    echo
-                    echo
-                done
+            sed -i 's/^debug=.*/debug=0/' /usr/local/ByteSaverSignalConverter$opcode/server.cfg
+            echo
+            echo -e "${BBlue}Updated Debug To '0' In (server.cfg)${Color_Off}"
+            echo
             fi
             
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping iTelSwitch Log Delete Process${Color_Off}"
-                echo
-                echo -e "${BRed}No Switch Name Entered${Color_Off}"
-                echo
-                echo
+            sleep 3
+            
+            if [[ -z "$sname" ]];
+            then
+            echo -e "${BRed}Skiping Switch Log Delete Process....${Color_Off}"
             else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BCyan}Deleting iTelSwitch Log File${Color_Off}"
-                    echo
-                    echo -e "${BYellow}Switch Name :${Color_Off} ${BRed}$sname ${Color_Off}"
-                    echo
-                    echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
-                    echo
-
-                    # Delete iTelSwitch Signal log files
-                    cd "/usr/local/iTelSwitchPlusSignaling$sname/" && rm -f iTelSwitchPlusSignaling.log.*
-
-                    # Delete iTelSwitch Media log files
-                    cd "/usr/local/iTelSwitchPlusMediaProxy$sname/" && rm -f iTelSwitchPlusMediaProxy.log.*
-
-                    # Update registrationDebug to 'NO' in iTelSwitch Signal config
-                    sed -i 's/^registrationDebug=.*/registrationDebug=no/' "/usr/local/iTelSwitchPlusSignaling$sname/config/server.cfg"
-                    echo -e "${BBlue}Updated RegistrationDebug To 'NO' In (server.cfg) ->${Color_Off} ${BRed}[$sname]${Color_Off}"
-                    echo
-                    echo -e "${BRed}Deleted ByteSaver Log File ${BYellow}[$sname]${Color_Off} ${BGreen}Done${Color_Off}"
-                    echo
-                    echo
-                done
-
+            echo
+            echo -e "${BYellow}Deleting iTelSwitch Log File ${Color_Off}"
+            echo
+            cd /usr/local/iTelSwitchPlusSignaling$sname/
+            rm -f iTelSwitchPlusSignaling.log.*
+            cd /usr/local/iTelSwitchPlusMediaProxy$sname/
+            rm -f iTelSwitchPlusMediaProxy.log.*
+            sed -i 's/^registrationDebug=.*/registrationDebug=no/' /usr/local/iTelSwitchPlusSignaling$sname/config/server.cfg
+            echo
+            echo -e "${BBlue}Updated RegistrationDebug To 'NO' In (server.cfg)${Color_Off}"
+            echo
+            echo -e "${BRed}Deleted iTelSwitch Log File Done. ${Color_Off}"
             fi
-
-            echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+        
+            sleep 3
+            
+            echo
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
         }
 
@@ -1309,29 +1269,13 @@ while true; do
             echo "$list_ByteSaver"
             echo
             echo -e "${BGreen}Enter Your Oparator Code: ${Color_Off}"
-            read -a opcode_array
+            read opcode
             echo
-            if [[ ${#opcode_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping ByteSaver Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No Operator Codes Entered${Color_Off}"
-                echo
-                echo
-            else
-                for opcode in "${opcode_array[@]}"; do
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}    ${BIRed}$opcode${Color_Off}    ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                    echo
-                    restart_ByteSaverSignaling
-                    echo
-                    restart_ByteSaverMediaProxy
-                    ps aux | grep -v grep | grep 'ByteSaver' --color=auto
-                    echo
-                    echo
-                done
-            fi
-            
+            restart_ByteSaverSignaling
+            echo
+            restart_ByteSaverMediaProxy
+            ps aux | grep -v grep | grep 'ByteSaver' --color=auto
+            echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BBlue}                            FINISH                         ${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -1348,26 +1292,10 @@ while true; do
             echo "$list_ByteSaver"
             echo
             echo -e "${BGreen}Enter Your Oparator Code: ${Color_Off}"
-            read -a opcode_array
+            read opcode           
             echo
-            if [[ ${#opcode_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping ByteSaverSignalConverter Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No Operator Codes Entered${Color_Off}"
-                echo
-                echo
-            else
-                for opcode in "${opcode_array[@]}"; do
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}    ${BIRed}$opcode${Color_Off}    ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                    echo
-                    restart_ByteSaverSignaling
-                    ps aux | grep -v grep | grep 'ByteSaverSignalConverter' --color=auto
-                    echo
-                    echo
-                done
-            fi
+            restart_ByteSaverSignaling
+            ps aux | grep -v grep | grep 'ByteSaverSignalConverter' --color=auto
             echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BBlue}                            FINISH                         ${Color_Off}"
@@ -1385,26 +1313,10 @@ while true; do
             echo "$list_ByteSaver"
             echo
             echo -e "${BGreen}Enter Your Oparator Code: ${Color_Off}"
-            read -a opcode_array
+            read opcode
             echo
-            if [[ ${#opcode_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping ByteSaverMediaProxy Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No Operator Codes Entered${Color_Off}"
-                echo
-                echo
-            else
-                for opcode in "${opcode_array[@]}"; do
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}    ${BIRed}$opcode${Color_Off}    ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                    echo
-                    restart_ByteSaverMediaProxy
-                    ps aux | grep -v grep | grep 'ByteSaverMediaProxy' --color=auto
-                    echo
-                    echo
-                done
-            fi           
+            restart_ByteSaverMediaProxy
+            ps aux | grep -v grep | grep 'ByteSaverMediaProxy' --color=auto
             echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BBlue}                            FINISH                         ${Color_Off}"
@@ -1422,105 +1334,90 @@ while true; do
             echo "$list_itelSwitch"
             echo
             echo -e "${BGreen}Enter Your iTelSwitchPlus Name: ${Color_Off}"
-            read -a sname_array
+            read sname
             echo
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping iTelSwitchPlus Restart Process${Color_Off}"
+            # Check if the log4j.properties_2023Yr file exists(Signaling)
+            cd /usr/local/iTelSwitchPlusSignaling$sname/
+            echo -e "${BCyan}iTelSwitchPlus(Signaling)${Color_Off}"
+            echo
+            if ls | grep -q "log4j.properties_2023Yr"; then
+                echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
                 echo
-                echo -e "${BRed}No iTelSwitch Name Entered${Color_Off}"
-                echo
-                echo
+                echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                cd /usr/local/
+                restart_iTelSwitchPlusSignaling
             else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}       ${BIRed}$sname${Color_Off}        ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo
-                    # Check if the log4j.properties_2023Yr file exists(Signaling)
-                    cd /usr/local/iTelSwitchPlusSignaling$sname/
-                    echo -e "${BCyan}iTelSwitchPlus(Signaling)${Color_Off}"
-                    echo
-                    if ls | grep -q "log4j.properties_2023Yr"; then
-                        echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
-                        echo
-                        echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        cd /usr/local/
-                        restart_iTelSwitchPlusSignaling
-                    else
-                        # Backup the existing log4j.properties file
-                        echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
-                        mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
-                        echo
-                        echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
-                        echo
-                        ls | grep -e "log4j.properties_20"
-                        echo
-                        sleep 2
+                # Backup the existing log4j.properties file
+                echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
+                mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
+                echo
+                echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
+                echo
+                ls | grep -e "log4j.properties_20"
+                echo
+                sleep 2
 
-                        # Download the new log4j.properties file
-                        echo
-                        echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
-                        echo
-                        wget http://149.20.188.7/log4j.properties_signaling
-                        echo
-                        echo -e "${BGreen}Re-Naming. ${Color_Off}"
-                        echo
-                        mv log4j.properties_signaling log4j.properties
-                        echo -e "${BCyan}Current Log4j File :${Color_Off}"
-                        echo
-                        ls --time=ctime -l log4j.properties
-                        echo
+                # Download the new log4j.properties file
+                echo
+                echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
+                echo
+                wget http://149.20.188.7/log4j.properties_signaling
+                echo
+                echo -e "${BGreen}Re-Naming. ${Color_Off}"
+                echo
+                mv log4j.properties_signaling log4j.properties
+                echo -e "${BCyan}Current Log4j File :${Color_Off}"
+                echo
+                ls --time=ctime -l log4j.properties
+                echo
 
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        cd /usr/local/
-                        restart_iTelSwitchPlusSignaling
-                    fi
-                    echo
-                    echo
-                    # Check if the log4j.properties_2023Yr file exists
-                    cd /usr/local/iTelSwitchPlusMediaProxy$sname/
-                    echo -e "${BCyan}iTelSwitchPlus(MediaProxy)${Color_Off}"
-                    echo
-                    if ls | grep -q "log4j.properties_2023Yr"; then
-                        echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
-                        echo
-                        echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        restart_iTelSwitchPlusMediaProxy
-                    else
-                        # Backup the existing log4j.properties file
-                        echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
-                        mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
-                        echo
-                        echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
-                        echo
-                        ls | grep -e "log4j.properties_20"
-                        echo
-                        sleep 2
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                cd /usr/local/
+                restart_iTelSwitchPlusSignaling
+            fi
+            echo
+            echo
+            # Check if the log4j.properties_2023Yr file exists
+            cd /usr/local/iTelSwitchPlusMediaProxy$sname/
+            echo -e "${BCyan}iTelSwitchPlus(MediaProxy)${Color_Off}"
+            echo
+            if ls | grep -q "log4j.properties_2023Yr"; then
+                echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
+                echo
+                echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                restart_iTelSwitchPlusMediaProxy
+            else
+                # Backup the existing log4j.properties file
+                echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
+                mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
+                echo
+                echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
+                echo
+                ls | grep -e "log4j.properties_20"
+                echo
+                sleep 2
 
-                        # Download the new log4j.properties file
-                        echo
-                        echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
-                        echo
-                        wget http://149.20.188.7/log4j.properties_media
-                        echo
-                        echo -e "${BGreen}Re-Naming. ${Color_Off}"
-                        echo
-                        mv log4j.properties_media log4j.properties
-                        echo -e "${BCyan}Current Log4j File :${Color_Off}"
-                        echo
-                        ls --time=ctime -l log4j.properties
-                        echo
+                # Download the new log4j.properties file
+                echo
+                echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
+                echo
+                wget http://149.20.188.7/log4j.properties_media
+                echo
+                echo -e "${BGreen}Re-Naming. ${Color_Off}"
+                echo
+                mv log4j.properties_media log4j.properties
+                echo -e "${BCyan}Current Log4j File :${Color_Off}"
+                echo
+                ls --time=ctime -l log4j.properties
+                echo
 
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        restart_iTelSwitchPlusMediaProxy
-                    fi
-                    ps aux | grep -v grep | grep 'iTelSwitchPlus' --color=auto
-                    echo
-                    echo
-                done
-            fi    
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                restart_iTelSwitchPlusMediaProxy
+            fi
+            ps aux | grep -v grep | grep 'iTelSwitchPlus' --color=auto
+            echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BBlue}                            FINISH                         ${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -1537,26 +1434,9 @@ while true; do
             echo "$list_itelSwitch"
             echo
             echo -e "${BGreen}Enter Your iTelSwitchPlus Name: ${Color_Off}"
-            read -a sname_array
-            echo
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping iTelSwitchPlusSignaling Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No iTelSwitch Name Entered${Color_Off}"
-                echo
-                echo
-            else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}       ${BIRed}$sname${Color_Off}        ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo
-                    restart_iTelSwitchPlusSignaling
-                    ps aux | grep -v grep | grep 'iTelSwitchPlus' --color=auto
-                    echo
-                    echo
-                done
-            fi
+            read sname
+            restart_iTelSwitchPlusSignaling
+            ps aux | grep -v grep | grep 'iTelSwitchPlus' --color=auto
             echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BBlue}                            FINISH                         ${Color_Off}"
@@ -1574,26 +1454,9 @@ while true; do
             echo "$list_itelSwitch"
             echo
             echo -e "${BGreen}Enter Your Switch Name: ${Color_Off}"
-            read -a sname_array
-            echo
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping iTelSwitchPlusMediaProxy Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No iTelSwitch Name Entered${Color_Off}"
-                echo
-                echo
-            else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}       ${BIRed}$sname${Color_Off}        ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo
-                    restart_iTelSwitchPlusMediaProxy
-                    ps aux | grep -v grep | grep 'iTelSwitchPlus' --color=auto
-                    echo
-                    echo
-                done
-            fi
+            read sname
+            restart_iTelSwitchPlusMediaProxy
+            ps aux | grep -v grep | grep 'iTelSwitchPlus' --color=auto
             echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BBlue}                            FINISH                         ${Color_Off}"
@@ -1651,146 +1514,200 @@ while true; do
             echo "$list_ByteSaver"
             echo
             echo -e "${BGreen}Enter Your Oparator Code: ${Color_Off}"
-            read -a opcode_array
+            read opcode
             echo
             echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
             echo "$list_itelSwitch"
             echo
             echo -e "${BGreen}Enter Your iTelSwitchPlus Name: ${Color_Off}"
-            read -a sname_array
+            read sname
+            echo
+            echo -e "${BYellow}List Of DBHealthChecker:${Color_Off}"
+            echo "$list_DBHC"
+            echo 
+            echo -e "${BGreen}Enter Your DBHealthChacker Name: ${Color_Off}"
+            read dbhcname
             echo
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*HDDReduce*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Service--${Color_Off}${BRed}(HDD Reduce)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             delete_serviceLog
+            echo 
+
+            until [[ $choice == e ]]
+            do           
+            echo -e "${BGreen}Want To Reduce More? [y/n]${Color_Off}"
+            read choice
             echo
+            
+            case $choice in
+            y)
+            echo -e "${BYellow}List Of ByteSaver:${Color_Off}"
+            echo "$list_ByteSaver"
+            echo
+            echo -e "${BGreen}Enter Another Oparator Code: ${Color_Off}"
+            read opcode2
+            echo
+            echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
+            echo "$list_itelSwitch"
+            echo
+            echo -e "${BGreen}Enter Another iTelSwitchPlus Name: ${Color_Off}"
+            read sname2
+            echo   
+            echo
+            echo -e "${BYellow}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo
+            if [[ -z "$opcode2" ]];
+            then
+            echo -e "${BRed}Skiping ByteSaver Log Delete Process....${Color_Off}"
+            echo
+            else
+            echo -e "${BPurple}Deleting ByteSaver Log File.......... ${Color_Off}"
+            echo
+            cd /usr/local/ByteSaverSignalConverter$opcode2/
+            rm -f SignalingProxy.log.*
+            cd /usr/local/ByteSaverSignalConverter$opcode2/logs/
+            rm -rf `date "+%Y"`*
+            cd /usr/local/ByteSaverMediaProxy$opcode2/
+            rm -f MediaProxy.log.*
+            cd /usr/local/ByteSaverMediaProxy$opcode2/logs/
+            rm -rf `date "+%Y"`*
+            sed -i 's/^debug=.*/debug=0/' /usr/local/ByteSaverSignalConverter$opcode2/server.cfg
+            echo
+            echo -e "${BBlue}Updated Debug To '0' In (server.cfg)${Color_Off}"
+            echo
+            echo -e "${BRed}Deleted ByteSaver Log File Done. ${Color_Off}"
+            fi
+            
+            sleep 3
+            
+            if [[ -z "$sname2" ]];
+            then
+            echo -e "${BRed}Skiping Switch Log Delete Process....${Color_Off}"
+            else
+            echo
+            echo -e "${BPurple}Deleting iTelSwitch Log File......... ${Color_Off}"
+            echo
+            cd /usr/local/iTelSwitchPlusSignaling$sname2/
+            rm -f iTelSwitchPlusSignaling.log.*
+            cd /usr/local/iTelSwitchPlusMediaProxy$sname2/
+            rm -f iTelSwitchPlusMediaProxy.log.*
+            sed -i 's/^registrationDebug=.*/registrationDebug=no/' /usr/local/iTelSwitchPlusSignaling$sname2/config/server.cfg
+            echo
+            echo -e "${BBlue}Updated RegistrationDebug To 'NO' In (server.cfg)${Color_Off}"
+            echo
+            echo -e "${BRed}Deleted iTelSwitch Log File Done. ${Color_Off}"
+            fi
+        
+            sleep 3
+            
+            echo
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo
+            ;;
+            *)
             echo -e "${BGreen}We Are Forward To The Next Step.${Color_Off}"
             echo
-
+            break;
+            ;;
+            esac
+            done
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*ByteSaver*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(ByteSaver)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo
-            if [[ ${#opcode_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping ByteSaver Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No Operator Codes Entered${Color_Off}"
-                echo
-                echo
-            else
-                for opcode in "${opcode_array[@]}"; do
-                        echo -e "${BIBlue}---------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}    ${BIRed}$opcode${Color_Off}    ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                        echo
-                        restart_ByteSaverSignaling           
-                        echo
-                        echo            
-                        restart_ByteSaverMediaProxy
-                done
-            fi
+            restart_ByteSaverSignaling           
+            echo
+            echo            
+            restart_ByteSaverMediaProxy
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*iTelSwitch*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(iTelSwitchPlus)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping iTelSwitch Restart Process${Color_Off}"
+            # Check if the log4j.properties_2023Yr file exists(Signaling)
+            cd /usr/local/iTelSwitchPlusSignaling$sname/
+            echo -e "${BCyan}iTelSwitchPlus(Signaling)${Color_Off}"
+            echo
+            if ls | grep -q "log4j.properties_2023Yr"; then
+                echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
                 echo
-                echo -e "${BRed}No iTelSwitch Name Entered${Color_Off}"
-                echo
-                echo
+                echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                cd /usr/local/
+                restart_iTelSwitchPlusSignaling
             else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}       ${BIRed}$sname${Color_Off}        ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo
-                    # Check if the log4j.properties_2023Yr file exists(Signaling)
-                    cd /usr/local/iTelSwitchPlusSignaling$sname/
-                    echo -e "${BCyan}iTelSwitchPlus(Signaling)${Color_Off}"
-                    echo
-                    if ls | grep -q "log4j.properties_2023Yr"; then
-                        echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
-                        echo
-                        echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        cd /usr/local/
-                        restart_iTelSwitchPlusSignaling
-                    else
-                        # Backup the existing log4j.properties file
-                        echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
-                        mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
-                        echo
-                        echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
-                        echo
-                        ls | grep -e "log4j.properties_20"
-                        echo
-                        sleep 2
+                # Backup the existing log4j.properties file
+                echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
+                mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
+                echo
+                echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
+                echo
+                ls | grep -e "log4j.properties_20"
+                echo
+                sleep 2
 
-                        # Download the new log4j.properties file
-                        echo
-                        echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
-                        echo
-                        wget http://149.20.188.7/log4j.properties_signaling
-                        echo
-                        echo -e "${BGreen}Re-Naming. ${Color_Off}"
-                        echo
-                        mv log4j.properties_signaling log4j.properties
-                        echo -e "${BCyan}Current Log4j File :${Color_Off}"
-                        echo
-                        ls --time=ctime -l log4j.properties
-                        echo
+                # Download the new log4j.properties file
+                echo
+                echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
+                echo
+                wget http://149.20.188.7/log4j.properties_signaling
+                echo
+                echo -e "${BGreen}Re-Naming. ${Color_Off}"
+                echo
+                mv log4j.properties_signaling log4j.properties
+                echo -e "${BCyan}Current Log4j File :${Color_Off}"
+                echo
+                ls --time=ctime -l log4j.properties
+                echo
 
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        cd /usr/local/
-                        restart_iTelSwitchPlusSignaling
-                    fi
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                cd /usr/local/
+                restart_iTelSwitchPlusSignaling
+            fi
 
-                    echo
-                    echo
+            echo
+            echo
 
-                    # Check if the log4j.properties_2023Yr file exists(MediaProxy)
-                    cd /usr/local/iTelSwitchPlusMediaProxy$sname/
-                    echo -e "${BCyan}iTelSwitchPlus(MediaProxy)${Color_Off}"
-                    echo
-                    if ls | grep -q "log4j.properties_2023Yr"; then
-                        echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
-                        echo
-                        echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        restart_iTelSwitchPlusMediaProxy
-                    else
-                        # Backup the existing log4j.properties file
-                        echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
-                        mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
-                        echo
-                        echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
-                        echo
-                        ls | grep -e "log4j.properties_20"
-                        echo
-                        sleep 2
+            # Check if the log4j.properties_2023Yr file exists(MediaProxy)
+            cd /usr/local/iTelSwitchPlusMediaProxy$sname/
+            echo -e "${BCyan}iTelSwitchPlus(MediaProxy)${Color_Off}"
+            echo
+            if ls | grep -q "log4j.properties_2023Yr"; then
+                echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
+                echo
+                echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                restart_iTelSwitchPlusMediaProxy
+            else
+                # Backup the existing log4j.properties file
+                echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
+                mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
+                echo
+                echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
+                echo
+                ls | grep -e "log4j.properties_20"
+                echo
+                sleep 2
 
-                        # Download the new log4j.properties file
-                        echo
-                        echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
-                        echo
-                        wget http://149.20.188.7/log4j.properties_media
-                        echo
-                        echo -e "${BGreen}Re-Naming. ${Color_Off}"
-                        echo
-                        mv log4j.properties_media log4j.properties
-                        echo -e "${BCyan}Current Log4j File :${Color_Off}"
-                        echo
-                        ls --time=ctime -l log4j.properties
-                        echo
+                # Download the new log4j.properties file
+                echo
+                echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
+                echo
+                wget http://149.20.188.7/log4j.properties_media
+                echo
+                echo -e "${BGreen}Re-Naming. ${Color_Off}"
+                echo
+                mv log4j.properties_media log4j.properties
+                echo -e "${BCyan}Current Log4j File :${Color_Off}"
+                echo
+                ls --time=ctime -l log4j.properties
+                echo
 
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        restart_iTelSwitchPlusMediaProxy
-                    fi
-                done
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                restart_iTelSwitchPlusMediaProxy
             fi
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*DiskSpaceChecker*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -1818,7 +1735,6 @@ while true; do
                 echo -e "${BIRed}File $file_path Not Found.${Color_Off}"
             fi
             echo -e "${BPurple}DiskSpaceChecker Shuting Down:${Color_Off}"
-            echo
             sh /usr/local/DiskSpaceChecker/shutdownDiskSpaceChecker.sh
             sh /usr/local/DiskSpaceChecker/shutdownDiskSpaceChecker.sh
             sh /usr/local/DiskSpaceChecker/shutdownDiskSpaceChecker.sh
@@ -1835,59 +1751,37 @@ while true; do
             echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(DBHealthChecker)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping DBHealthChecker Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No iTelSwitch Name Entered${Color_Off}"
-                echo
-                echo
-            else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}       ${BIRed}$sname${Color_Off}        ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo
-                    echo -e "${BPurple}DBHealthChecker Shuting Down:${Color_Off}"
-                    echo
-                    sh /usr/local/DBHealthChecker$sname/shutdownDBHealthChecker.sh
-                    sh /usr/local/DBHealthChecker$sname/shutdownDBHealthChecker.sh
-                    sh /usr/local/DBHealthChecker$sname/shutdownDBHealthChecker.sh
-                    echo
-                    sleep 2
-                    echo
-                    sh /usr/local/DBHealthChecker$dbhcname/runDBHealthChecker.sh
-                    echo
-                done
-            fi
+            echo -e "${BPurple}DBHealthChecker Shuting Down:${Color_Off}"
+            sh /usr/local/DBHealthChecker$dbhcname/shutdownDBHealthChecker.sh
+            sh /usr/local/DBHealthChecker$dbhcname/shutdownDBHealthChecker.sh
+            sh /usr/local/DBHealthChecker$dbhcname/shutdownDBHealthChecker.sh
+            echo
+
+            sleep 5
+
+            echo
+
+            sh /usr/local/DBHealthChecker$dbhcname/runDBHealthChecker.sh
+
+            sleep 5
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*AppServer*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(iTelAppsServer)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping DBHealthChecker Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No iTelSwitch Name Entered${Color_Off}"
-                echo
-                echo
-            else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}       ${BIRed}$sname${Color_Off}        ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo
-                    echo -e "${BPurple}iTelAppsServer Shuting Down:${Color_Off}"
-                    sh /usr/local/iTelAppsServer$sname/shutdowniTelAppsServer.sh
-                    sh /usr/local/iTelAppsServer$sname/shutdowniTelAppsServer.sh
-                    sh /usr/local/iTelAppsServer$sname/shutdowniTelAppsServer.sh
-                    echo
-                    sleep 2
-                    echo
-                    sh /usr/local/iTelAppsServer$sname/runiTelAppsServer.sh
-                    sleep 5
-                done
-            fi
-                    
+            echo -e "${BPurple}DBHealthChecker Shuting Down:${Color_Off}"
+            sh /usr/local/iTelAppsServer$sname/shutdowniTelAppsServer.sh
+            sh /usr/local/iTelAppsServer$sname/shutdowniTelAppsServer.sh
+            sh /usr/local/iTelAppsServer$sname/shutdowniTelAppsServer.sh
+            echo
+
+            sleep 5
+
+            echo
+
+            sh /usr/local/iTelAppsServer$sname/runiTelAppsServer.sh
+            
+            sleep 5
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*JakartaTomcat*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(Jakarta - Tomcat)${Color_Off}"
@@ -1916,7 +1810,6 @@ while true; do
             ps aux | grep -v grep | grep 'ByteSaver' --color=auto
             ps aux | grep -v grep | grep 'iTelSwitch' --color=auto
             ps aux | grep -v grep | grep 'jakarta-tomcat-7' --color=auto
-            echo
             echo
             sleep 5
             echo
@@ -2063,18 +1956,97 @@ while true; do
             echo "$list_ByteSaver"
             echo
             echo -e "${BCyan}Enter Your Oparator Code: ${Color_Off}"
-            read -a opcode_array
+            read opcode
             echo
             echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
             echo "$list_itelSwitch"
             echo
             echo -e "${BCyan}Enter Your iTelSwitchPlus Name: ${Color_Off}"
-            read -a sname_array
+            read sname
             
             delete_serviceLog
-
-                echo -e "${BPurple}We Are Forward To The Next Step.${Color_Off}"
-                echo
+            
+            until [[ $choice == e ]]
+            do
+            
+            echo -e "${BCyan}Want To Reduce More? [y/n]${Color_Off}"
+            read choice
+            echo
+            
+                case $choice in
+                    y)
+                    echo -e "${BYellow}List Of ByteSaver:${Color_Off}"
+                    echo "$list_ByteSaver"
+                    echo
+                    echo -e "${BCyan}Enter Another Oparator Code: ${Color_Off}"
+                    read opcode2
+                    echo
+                    echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
+                    echo "$list_itelSwitch"
+                    echo
+                    echo -e "${BCyan}Enter Another iTelSwitchPlus Name: ${Color_Off}"
+                    read sname2
+                    echo   
+                    echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+                    echo
+                    if [[ -z "$opcode2" ]];
+                    then
+                    echo
+                    echo -e "${BRed}Skiping ByteSaver Log Delete Process....${Color_Off}"
+                    echo
+                    else
+                    echo -e "${BYellow}Deleting ByteSaver Log File.......... ${Color_Off}"
+                    echo
+                    cd /usr/local/ByteSaverSignalConverter$opcode2/
+                    rm -f SignalingProxy.log.*
+                    cd /usr/local/ByteSaverSignalConverter$opcode2/logs/
+                    rm -rf `date "+%Y"`*
+                    cd /usr/local/ByteSaverMediaProxy$opcode2/
+                    rm -f MediaProxy.log.*
+                    cd /usr/local/ByteSaverMediaProxy$opcode2/logs/
+                    rm -rf `date "+%Y"`*
+                    sed -i 's/^debug=.*/debug=0/' /usr/local/ByteSaverSignalConverter$opcode2/server.cfg
+                    echo
+                    echo -e "${BBlue}Updated Debug To '0' In (server.cfg)${Color_Off}"
+                    echo
+                    echo -e "${BRed}Deleted ByteSaver Log File Done. ${Color_Off}"
+                    fi
+                    
+                    sleep 3
+                    
+                    if [[ -z "$sname2" ]];
+                    then
+                    echo
+                    echo -e "${BRed}Skiping Switch Log Delete Process....${Color_Off}"
+                    else
+                    echo
+                    echo -e "${BYellow}Deleting iTelSwitch Log File......... ${Color_Off}"
+                    echo
+                    cd /usr/local/iTelSwitchPlusSignaling$sname2/
+                    rm -f iTelSwitchPlusSignaling.log.*
+                    cd /usr/local/iTelSwitchPlusMediaProxy$sname2/
+                    rm -f iTelSwitchPlusMediaProxy.log.*
+                    sed -i 's/^registrationDebug=.*/registrationDebug=no/' /usr/local/iTelSwitchPlusSignaling$sname2/config/server.cfg
+                    echo
+                    echo -e "${BBlue}Updated RegistrationDebug To 'NO' In (server.cfg)${Color_Off}"
+                    echo
+                    echo -e "${BRed}Deleted iTelSwitch Log File Done. ${Color_Off}"
+                    fi
+                
+                    sleep 3
+                    
+                    echo
+                    echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+                    echo
+                    ;;
+                    *)
+                    echo -e "${BPurple}We Are Forward To The Next Step.${Color_Off}"
+                    echo
+                    break;
+                    ;;
+                    esac
+                done    
+            
             
 
             echo -e "${BCyan}Want To Drop Failed Table? [y/n]${Color_Off}"
@@ -2202,7 +2174,7 @@ while true; do
             echo
             mysql -u root --force -D "$failed_db_name" -e "SHOW TABLES;"
             echo
-            echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
             echo -e "${BPurple}We Are Forward To The Next Step.${Color_Off}"
             echo 
@@ -2210,7 +2182,7 @@ while true; do
             echo
             echo -e "${BBlue}Thanks For Your Choice!!${Color_Off}"
             echo
-            echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
             echo -e "${BPurple}We Are Forward To The Next Step.${Color_Off}"
             echo  
@@ -2283,21 +2255,25 @@ while true; do
                     echo -e "${BGreen}Gzipping Completed For :${Color_Off} ${BRed}$current_file${Color_Off}"
                 fi
             done
-                echo
-                echo -e "${BGreen}Gzipping Completed For NON-GZIPPED (mysqld-bin) Files Between${Color_Off} ${BRed}$start_number${Color_Off} ${BGreen}&${Color_Off} ${BRed}$last_number${Color_Off}${BGreen}.${Color_Off}"
-                echo
-                echo
-                ls mysqld-bin.*
-                echo
-                echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
-                echo
+            echo
+            echo -e "${BGreen}Gzipping Completed For NON-GZIPPED (mysqld-bin) Files Between${Color_Off} ${BRed}$start_number${Color_Off} ${BGreen}&${Color_Off} ${BRed}$last_number${Color_Off}${BGreen}.${Color_Off}"
+            echo
+            echo
+            ls mysqld-bin.*
+            echo
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo
             else
-                echo
-                echo -e "${BBlue}Thanks For Your Choice!!${Color_Off}"
-                echo
-                echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
-                echo      
+            echo
+            echo -e "${BBlue}Thanks For Your Choice!!${Color_Off}"
+            echo
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo
+              
             fi
+
+
+
 
             echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -2369,6 +2345,8 @@ while true; do
             echo -e "${BPurple}|${Color_Off}                                           ${BPurple}|${Color_Off}"
             echo -e "${BPurple} ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~${Color_Off}"
             echo
+
+
 
             elif [[ $billingOp == 2 ]]
             then
@@ -2980,13 +2958,13 @@ while true; do
             echo "$list_ByteSaver"
             echo
             echo -e "${BGreen}Enter Your Oparator Code: ${Color_Off}"
-            read -a opcode_array
+            read opcode
             echo
             echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
             echo "$list_itelSwitch"
             echo
             echo -e "${BGreen}Enter Your iTelSwitchPlus Name: ${Color_Off}"
-            read -a sname_array
+            read sname
             echo 
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*HDDReduce*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -2995,129 +2973,180 @@ while true; do
             echo 
             delete_serviceLog
             echo
+            until [[ $choice == e ]]
+            do
+            
+            echo -e "${BGreen}Want To Reduce More? [y/n]${Color_Off}"
+            read choice
+            echo
+            
+            case $choice in
+            y)
+            echo -e "${BYellow}List Of ByteSaver:${Color_Off}"
+            echo "$list_ByteSaver"
+            echo
+            echo -e "${BGreen}Enter Another Oparator Code: ${Color_Off}"
+            read opcode2
+            echo
+            echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
+            echo "$list_itelSwitch"
+            echo
+            echo -e "${BGreen}Enter Another iTelSwitchPlus Name: ${Color_Off}"
+            read sname2
+            echo   
+            echo
+            echo -e "${BYellow}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo
+            if [[ -z "$opcode2" ]];
+            then
+            echo -e "${BRed}Skiping ByteSaver Log Delete Process....${Color_Off}"
+            echo
+            else
+            echo -e "${BPurple}Deleting ByteSaver Log File.......... ${Color_Off}"
+            echo
+            cd /usr/local/ByteSaverSignalConverter$opcode2/
+            rm -f SignalingProxy.log.*
+            cd /usr/local/ByteSaverSignalConverter$opcode2/logs/
+            rm -rf `date "+%Y"`*
+            cd /usr/local/ByteSaverMediaProxy$opcode2/
+            rm -f MediaProxy.log.*
+            cd /usr/local/ByteSaverMediaProxy$opcode2/logs/
+            rm -rf `date "+%Y"`*
+            sed -i 's/^debug=.*/debug=0/' /usr/local/ByteSaverSignalConverter$opcode2/server.cfg
+            echo
+            echo -e "${BBlue}Updated Debug To '0' In (server.cfg)${Color_Off}"
+            echo
+            echo -e "${BRed}Deleted ByteSaver Log File Done. ${Color_Off}"
+            fi
+            
+            sleep 3
+            
+            if [[ -z "$sname2" ]];
+            then
+            echo -e "${BRed}Skiping Switch Log Delete Process....${Color_Off}"
+            else
+            echo
+            echo -e "${BPurple}Deleting iTelSwitch Log File......... ${Color_Off}"
+            echo
+            cd /usr/local/iTelSwitchPlusSignaling$sname2/
+            rm -f iTelSwitchPlusSignaling.log.*
+            cd /usr/local/iTelSwitchPlusMediaProxy$sname2/
+            rm -f iTelSwitchPlusMediaProxy.log.*
+            sed -i 's/^registrationDebug=.*/registrationDebug=no/' /usr/local/iTelSwitchPlusSignaling$sname2/config/server.cfg
+            echo
+            echo -e "${BBlue}Updated RegistrationDebug To 'NO' In (server.cfg)${Color_Off}"
+            echo
+            echo -e "${BRed}Deleted iTelSwitch Log File Done. ${Color_Off}"
+            fi
+        
+            sleep 3
+            
+            echo
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo
+            ;;
+            *)
+            echo -e "${BGreen}We Are Forward To The Next Step.${Color_Off}"
+            echo
+            break;
+            ;;
+            esac
+            done
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*ByteSaver*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(ByteSaver)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo
-            if [[ ${#opcode_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping ByteSaver Restart Process${Color_Off}"
-                echo
-                echo -e "${BRed}No Operator Codes Entered${Color_Off}"
-                echo
-                echo
-            else
-                for opcode in "${opcode_array[@]}"; do
-                        echo -e "${BIBlue}---------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}    ${BIRed}$opcode${Color_Off}    ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}---------------${Color_Off}"
-                        echo
-                        restart_ByteSaverSignaling           
-                        echo
-                        echo            
-                        restart_ByteSaverMediaProxy
-                done
-            fi
+            restart_ByteSaverSignaling            
+            echo
+            echo           
+            restart_ByteSaverMediaProxy
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*iTelSwitch*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(iTelSwitchPlus)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo
-            if [[ ${#sname_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping iTelSwitch Restart Process${Color_Off}"
+            # Check if the log4j.properties_2023Yr file exists(Signaling)
+            cd /usr/local/iTelSwitchPlusSignaling$sname/
+            echo -e "${BCyan}iTelSwitchPlus(Signaling)${Color_Off}"
+            echo
+            if ls | grep -q "log4j.properties_2023Yr"; then
+                echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
                 echo
-                echo -e "${BRed}No iTelSwitch Name Entered${Color_Off}"
-                echo
-                echo
+                echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                cd /usr/local/
+                restart_iTelSwitchPlusSignaling
             else
-                for sname in "${sname_array[@]}"; do
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}       ${BIRed}$sname${Color_Off}        ${BIBlue}|${Color_Off}"
-                    echo -e "${BIBlue}--------------------------${Color_Off}"
-                    echo
-                    # Check if the log4j.properties_2023Yr file exists(Signaling)
-                    cd /usr/local/iTelSwitchPlusSignaling$sname/
-                    echo -e "${BCyan}iTelSwitchPlus(Signaling)${Color_Off}"
-                    echo
-                    if ls | grep -q "log4j.properties_2023Yr"; then
-                        echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
-                        echo
-                        echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        cd /usr/local/
-                        restart_iTelSwitchPlusSignaling
-                    else
-                        # Backup the existing log4j.properties file
-                        echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
-                        mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
-                        echo
-                        echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
-                        echo
-                        ls | grep -e "log4j.properties_20"
-                        echo
-                        sleep 2
+                # Backup the existing log4j.properties file
+                echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
+                mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
+                echo
+                echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
+                echo
+                ls | grep -e "log4j.properties_20"
+                echo
+                sleep 2
 
-                        # Download the new log4j.properties file
-                        echo
-                        echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
-                        echo
-                        wget http://149.20.188.7/log4j.properties_signaling
-                        echo
-                        echo -e "${BGreen}Re-Naming. ${Color_Off}"
-                        echo
-                        mv log4j.properties_signaling log4j.properties
-                        echo -e "${BCyan}Current Log4j File :${Color_Off}"
-                        echo
-                        ls --time=ctime -l log4j.properties
-                        echo
+                # Download the new log4j.properties file
+                echo
+                echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
+                echo
+                wget http://149.20.188.7/log4j.properties_signaling
+                echo
+                echo -e "${BGreen}Re-Naming. ${Color_Off}"
+                echo
+                mv log4j.properties_signaling log4j.properties
+                echo -e "${BCyan}Current Log4j File :${Color_Off}"
+                echo
+                ls --time=ctime -l log4j.properties
+                echo
 
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        cd /usr/local/
-                        restart_iTelSwitchPlusSignaling
-                    fi
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                cd /usr/local/
+                restart_iTelSwitchPlusSignaling
+            fi
 
-                    echo
-                    echo
+            echo
+            echo
 
-                    # Check if the log4j.properties_2023Yr file exists
-                    cd /usr/local/iTelSwitchPlusMediaProxy$sname/
-                    echo -e "${BCyan}iTelSwitchPlus(MediaProxy)${Color_Off}"
-                    echo
-                    if ls | grep -q "log4j.properties_2023Yr"; then
-                        echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
-                        echo
-                        echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        restart_iTelSwitchPlusMediaProxy
-                    else
-                        # Backup the existing log4j.properties file
-                        echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
-                        mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
-                        echo
-                        echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
-                        echo
-                        ls | grep -e "log4j.properties_20"
-                        echo
-                        sleep 2
+            # Check if the log4j.properties_2023Yr file exists
+            cd /usr/local/iTelSwitchPlusMediaProxy$sname/
+            echo -e "${BCyan}iTelSwitchPlus(MediaProxy)${Color_Off}"
+            echo
+            if ls | grep -q "log4j.properties_2023Yr"; then
+                echo -e "${BRed}N.B: Found Backup log4j.properties File.${Color_Off}"
+                echo
+                echo -e "${BYellow}Skipping Backup & Download For New log4j File.${Color_Off}"
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                restart_iTelSwitchPlusMediaProxy
+            else
+                # Backup the existing log4j.properties file
+                echo -e "${BYellow}Taking Backup Old log4j File.${Color_Off}"
+                mv log4j.properties "log4j.properties_$(date '+%YYr_%mMon_%dDay_%HHr_%MMin_%SSec')"
+                echo
+                echo -e "${BCyan}Backed Up log4j.properties To :${Color_Off}"
+                echo
+                ls | grep -e "log4j.properties_20"
+                echo
+                sleep 2
 
-                        # Download the new log4j.properties file
-                        echo
-                        echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
-                        echo
-                        wget http://149.20.188.7/log4j.properties_media
-                        echo
-                        echo -e "${BGreen}Re-Naming. ${Color_Off}"
-                        echo
-                        mv log4j.properties_media log4j.properties
-                        echo -e "${BCyan}Current Log4j File :${Color_Off}"
-                        echo
-                        ls --time=ctime -l log4j.properties
-                        echo
+                # Download the new log4j.properties file
+                echo
+                echo -e "${BCyan}Downloading New Log4j File. ${Color_Off}"
+                echo
+                wget http://149.20.188.7/log4j.properties_media
+                echo
+                echo -e "${BGreen}Re-Naming. ${Color_Off}"
+                echo
+                mv log4j.properties_media log4j.properties
+                echo -e "${BCyan}Current Log4j File :${Color_Off}"
+                echo
+                ls --time=ctime -l log4j.properties
+                echo
 
-                        # Call the function to restart iTelSwitchPlusMediaProxy
-                        restart_iTelSwitchPlusMediaProxy
-                    fi
-                done
+                # Call the function to restart iTelSwitchPlusMediaProxy
+                restart_iTelSwitchPlusMediaProxy
             fi
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*JakartaTomcat*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -3148,7 +3177,6 @@ while true; do
             ps aux | grep -v grep | grep 'iTelSwitch' --color=auto
             ps aux | grep -v grep | grep 'jakarta-tomcat-7' --color=auto
             echo
-            echo
             sleep 5
             echo
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -3173,7 +3201,7 @@ while true; do
             echo -e "${BCyan}Service--${Color_Off}${BRed}(HDD Reduce)${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo
-            echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
             if [[ -z "$sbcname" ]];
             then
@@ -3192,7 +3220,7 @@ while true; do
             sleep 3
             
             echo
-            echo -e "${BYellow}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo -e "${BYellow}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
             echo   
 
@@ -3211,7 +3239,7 @@ while true; do
             read sbcname2
             echo   
             echo
-            echo -e "${BYellow}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo -e "${BYellow}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
         
             if [[ -z "$sbcname2" ]];
@@ -3231,7 +3259,7 @@ while true; do
             sleep 3
             
             echo
-            echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+            echo -e "${BGreen}Your HDD Is Now : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
             echo
             ;;
             *)
