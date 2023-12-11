@@ -93,12 +93,12 @@ echo
 
 devloper_INFO() {
 echo
-echo -e "${BIRed}SERVICE SCRIPT(3.0.6)${Color_Off}"
+echo -e "${BIRed}SERVICE SCRIPT(3.0.5)${Color_Off}"
 echo -e "${BIYellow}*-----------------------------------------------------------------------*${Color_Off}"
 echo -e "${BRed}TODAY                : ${Color_Off}${BYellow}`date +"%d-%m-%Y"` ${Color_Off}"
-echo -e "${BRed}LAST UPDATE          : ${Color_Off}${BYellow}11-12-2023 ${Color_Off}"
-echo -e "${BRed}PREVIOUS IMPLEMENTED : ${Color_Off}${BYellow}Introduce Multiple Entry For Restart ${Color_Off}"
-echo -e "${BRed}LAST IMPLEMENTED     : ${Color_Off}${BYellow}PIN Batch Balance Update [19] ${Color_Off}"
+echo -e "${BRed}LAST UPDATE          : ${Color_Off}${BYellow}01-12-2023 ${Color_Off}"
+echo -e "${BRed}PREVIOUS IMPLEMENTED : ${Color_Off}${BYellow}Delete All Deleted Data ${Color_Off}"
+echo -e "${BRed}LAST IMPLEMENTED     : ${Color_Off}${BYellow}Introduce Multiple Entry For Restart ${Color_Off}"
 echo -e "${BIYellow}*-----------------------------------------------------------------------*${Color_Off}"
 echo -e "${BRed}IMPLEMENTED BY MD. SABBIR HOSSAIN BORNO ${Color_Off}"
 echo -e "${BRed}SOFTWARE SUPPORT ENGINEER ${Color_Off}"
@@ -148,7 +148,6 @@ echo -e "*${BBlue}[SST]${Color_Off}------${BGreen}Service Stop${Color_Off}      
 echo -e "*${BBlue}[BRC]${Color_Off}------${BGreen}ByteSaver Registration Check${Color_Off}                  *"
 echo -e "*${BBlue}[17]${Color_Off}-------${BGreen}Delete All Deleted Data${Color_Off}                       *"
 echo -e "*${BBlue}[18]${Color_Off}-------${BGreen}Delete All Deleted PINs(Only)${Color_Off}                 *"
-echo -e "*${BBlue}[19]${Color_Off}-------${BGreen}PIN Batch Balance Update${Color_Off}                      *"
 echo -e "*${BCyan}------------------------${Color_Off}${URed}Installer${Color_Off}${BCyan}------------------------${Color_Off}*"
 echo -e "*${BBlue}[I]${Color_Off}--------${BGreen}All Installer${Color_Off}                                 *"
 echo -e "*${BCyan}-------------------------${Color_Off}${BRed}******${Color_Off}${BCyan}--------------------------${Color_Off}*"
@@ -3550,7 +3549,7 @@ while true; do
                 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbClient'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbClient_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbClient_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbClient_`date +"%Y%m%d"` RENAME vbClient_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbClient_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3561,7 +3560,7 @@ while true; do
 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbClientDetails'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbClientDetails_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbClientDetails_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbClientDetails_`date +"%Y%m%d"` RENAME vbClientDetails_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbClientDetails_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3572,7 +3571,7 @@ while true; do
 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbPin'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbPin_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbPin_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbPin_`date +"%Y%m%d"` RENAME vbPin_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbPin_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3583,7 +3582,7 @@ while true; do
 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbGtway'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbGtway_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbGtway_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbGtway_`date +"%Y%m%d"` RENAME vbGtway_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbGtway_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3594,7 +3593,7 @@ while true; do
 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbRatePlan'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbRatePlan_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbRatePlan_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbRatePlan_`date +"%Y%m%d"` RENAME vbRatePlan_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbRatePlan_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3605,7 +3604,7 @@ while true; do
 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbDestinationRatePlan'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbDestinationRatePlan_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbDestinationRatePlan_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbDestinationRatePlan_`date +"%Y%m%d"` RENAME vbDestinationRatePlan_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbDestinationRatePlan_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3699,7 +3698,7 @@ while true; do
             ;;
             #---------------------------------------------------------Finish--------------------------------------------------------
         18)
-            #---------------------------------------------------DeleteDeletedPINS---------------------------------------------------
+            #-------------------------------------------------------ServiceStop-----------------------------------------------------
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
             echo -e "${BCyan}Service--${Color_Off}${BRed}(Delete All Deteled PIN (ONLY))${Color_Off}"
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
@@ -3745,7 +3744,7 @@ while true; do
                 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbClient'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbClient_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbClient_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbClient_`date +"%Y%m%d"` RENAME vbClient_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbClient_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3756,7 +3755,7 @@ while true; do
 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbClientDetails'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbClientDetails_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbClientDetails_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbClientDetails_`date +"%Y%m%d"` RENAME vbClientDetails_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbClientDetails_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3767,7 +3766,7 @@ while true; do
 
                 local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbPin'")
                 if [ -n "$result" ]; then
-                    echo -e "${BIRed}vbPin_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
+                    echo -e "${BIRed}vbPin_`date +"%Y%m%d"`${Color_off}${BIBlue} Already Exist${Color_off}"
                     echo
                     mysql -u root --force -D $dbname -e "ALTER TABLE vbPin_`date +"%Y%m%d"` RENAME vbPin_`date +"%Y%m%d"`_2;"
                     echo -e "${BICyan}Re-Naming Existing Backup Table : vbPin_`date +"%Y%m%d"`_2 ${Color_off}"
@@ -3823,289 +3822,6 @@ while true; do
             echo -e "${BGreen}Enter iTelSwitchPlus Name: ${Color_Off}"
             read sname
             echo            
-            restart_iTelSwitchPlusSignaling
-            #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*JakartaTomcatRestart*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(Jakarta - Tomcat)${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-            restart_jakartaTomcat7
-            echo
-            else 
-            echo -e "${BRed}Need to Restart iTelSwitch & Tomcat Manually${Color_Off}"
-            echo
-            fi
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BBlue}                            FINISH                         ${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-            ;;
-            #---------------------------------------------------------Finish--------------------------------------------------------
-        19)
-            #-------------------------------------------------PinBatchBalanceUpdate-------------------------------------------------
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BCyan}Service--${Color_Off}${BRed}(PIN Batch Balance Update)${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-            echo -e "${BYellow}List Of iTelSwitch:${Color_Off}"
-            echo "$list_itelSwitch"
-            echo
-            echo -e "${BGreen}Enter iTelSwitchPlus Name: ${Color_Off}"
-            read sname
-            echo
-            echo -e "${BGreen}iTelBilling List ${Color_Off}"
-            echo
-            cd /usr/local/jakarta-tomcat-7.0.61/webapps/ && ls
-            echo
-            echo -e ${BGreen}"Enter Billing Name : ${Color_Off}"
-            read billingname
-            echo
-            #cat /usr/local/jakarta-tomcat-7.0.61/webapps/$billingname/WEB-INF/classes/*.xml
-            iTelBillingDB=$(grep -o 'jdbc:mysql:///[^?"]*' "/usr/local/jakarta-tomcat-7.0.61/webapps/$billingname/WEB-INF/classes/DatabaseConnection.xml" | sed -e 's/.*\/\/\([^?]*\)/\1/')
-            echo -e "${BCyan}iTelBilling Database Name:${Color_Off} ${BRed}"$iTelBillingDB"${Color_Off}"
-            echo
-            echo -e "${BGreen}Put The Database Name Here : ${Color_Off}"
-            read dbname
-            echo
-            echo -e "${BGreen}Enter PIN BATCH Name : ${Color_Off}"
-            read -a pinBatch_array
-            echo
-            echo -e "${BIRed}N.B: Amount Will Be Like [+10/-10]${Color_Off}"
-            echo -e "${BGreen}Enter The Amount : ${Color_Off}"
-            read amount
-            echo
-            if [[ ${#pinBatch_array[@]} -eq 0 ]]; then
-                echo -e "${BYellow}Skipping PIN Batch Balance Update Process${Color_Off}"
-                echo
-                echo -e "${BRed}No PIN BATCH Entered${Color_Off}"
-                echo
-                echo
-            else
-                for pinBatch in "${pinBatch_array[@]}"; do
-                    echo -e "${BIBlue}|---------------------------------------------------------|${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}${BIYellow}                      PIN BATCH NAME${Color_Off}${BIBlue}                     |${Color_Off}"
-                    echo -e "${BIBlue}|---------------------------------------------------------|${Color_Off}"
-                    echo -e "${BIBlue}|${Color_Off}${BIRed} $pinBatch${Color_Off}"
-                    echo -e "${BIBlue}|---------------------------------------------------------|${Color_Off}"
-                    echo
-                    #####CODE
-
-                    SQL_QUERY1="SELECT pbID FROM vbPinBatch WHERE pbName = '$pinBatch';"
-                    pinBatchID=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY1")
-                    echo -e "${BYellow}PIN Batch ID For PIN Batch [${Color_off} ${BIRed}$pinBatch${Color_off} ${BYellow}] :${Color_Off} ${BRed}$pinBatchID${Color_Off}"
-                    echo
-
-                    SQL_QUERY2="SELECT cbBalance FROM vbClientBalance WHERE cbAccountID IN (SELECT pinAccountID FROM vbPin WHERE pinBatchID = '$pinBatchID') LIMIT 5;"
-                    vbClientBalance=$(mysql -u root -D"$dbname" --column-names -s -N -e "$SQL_QUERY2")
-                    echo -e "${BYellow}vbClientBalance Table Data For PIN Batch [${Color_off} ${BIRed}$pinBatch${Color_off} ${BYellow}]${Color_Off}"
-                    echo -e "${BRed}$vbClientBalance${Color_Off}"
-                    echo
-
-                    # Function to check if a Backup Table exists
-                    BK_table_exists() {
-                        local vbClientBalance="vbClientBalance_`date +"%Y%m%d"`"
-                        local vbPinBatch="vbPinBatch_`date +"%Y%m%d"`"
-                        
-                        local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbClientBalance'")
-                        if [ -n "$result" ]; then
-                            echo -e "${BIRed}vbClientBalance_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
-                            echo
-                            mysql -u root --force -D $dbname -e "ALTER TABLE vbClientBalance_`date +"%Y%m%d"` RENAME vbClientBalance_`date +"%Y%m%d"`_2;"
-                            echo -e "${BICyan}Re-Naming Existing Backup Table :${Color_off} ${BIRed}vbClientBalance_`date +"%Y%m%d"`_2 ${Color_off}"
-                            echo
-                        else
-                            return 1  # Table does not exist
-                        fi
-
-                        local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbPinBatch'")
-                        if [ -n "$result" ]; then
-                            echo -e "${BIRed}vbPinBatch_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
-                            echo
-                            mysql -u root --force -D $dbname -e "ALTER TABLE vbPinBatch_`date +"%Y%m%d"` RENAME vbPinBatch_`date +"%Y%m%d"`_2;"
-                            echo -e "${BICyan}Re-Naming Existing Backup Table :${Color_off} ${BIRed}vbPinBatch_`date +"%Y%m%d"`_2 ${Color_off}"
-                            echo
-                        else
-                            return 1  # Table does not exist
-                        fi
-                    }
-
-                    BK_table_exists2() {
-                        local vbPayment="vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d")"
-                        
-                        local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbPayment'")
-                        if [ -n "$result" ]; then
-                            echo -e "${BIRed}vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d")${Color_off}${BIBlue} Backup Already Exist${Color_off}"
-                            echo
-                            mysql -u root --force -D $dbname -e "ALTER TABLE vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d") RENAME vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d")_2;"
-                            echo -e "${BICyan}Re-Naming Existing Backup Table :${Color_off} ${BIRed}vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d")_2 ${Color_off}"
-                            echo
-                        else
-                            return 1  # Table does not exist
-                        fi
-                    }
-                    BK_table_exists3() {
-                        local vbPayment="vbPayment_`date +"%Y%m%d"`"
-                        
-                        local result=$(mysql -u root --skip-column-names -D "$dbname" -e "SHOW TABLES LIKE '$vbPayment'")
-                        if [ -n "$result" ]; then
-                            echo -e "${BIRed}vbPayment_`date +"%Y%m%d"`${Color_off}${BIBlue} Backup Already Exist${Color_off}"
-                            echo
-                            mysql -u root --force -D $dbname -e "ALTER TABLE vbPayment_`date +"%Y%m%d"` RENAME vbPayment_`date +"%Y%m%d"`_2;"
-                            echo -e "${BICyan}Re-Naming Existing Backup Table :${Color_off} ${BIRed}vbPayment_`date +"%Y%m%d"`_2 ${Color_off}"
-                            echo
-                        else
-                            return 1  # Table does not exist
-                        fi
-                    }
-
-                    BK_table_exists
-
-                    echo
-                    echo -e "${BCyan}Taking Backup Of vbClientBalance, vbPinBatch Table${Color_Off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "CREATE TABLE vbClientBalance_`date +"%Y%m%d"` LIKE vbClientBalance; INSERT INTO vbClientBalance_`date +"%Y%m%d"` (SELECT * FROM vbClientBalance);"
-                    echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbClientBalance_`date +"%Y%m%d"`${Color_Off}"
-                    echo
-                    mysql -u root --force -D $dbname -e "CREATE TABLE vbPinBatch_`date +"%Y%m%d"` LIKE vbPinBatch; INSERT INTO vbPinBatch_`date +"%Y%m%d"` (SELECT * FROM vbPinBatch);"
-                    echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbPinBatch_`date +"%Y%m%d"`${Color_Off}"
-                    echo
-
-
-                    echo
-                    echo -e "${BCyan}Update PIN Batch Balance From vbClientBalance, vbPinBatch Table${Color_Off}"
-                    echo
-                    
-                    mysql -u root --force -D $dbname -e "update vbClientBalance set cbBalance=cbBalance$amount where cbAccountID in(select pinAccountID from vbPin where pinBatchID = '$pinBatchID');"
-                    echo -e "${BYellow}Update PIN Batch Balance From${Color_Off} ${BRed}vbClientBalance${Color_Off}"
-                    echo
-
-                    mysql -u root --force -D $dbname -e "update vbPinBatch set pbInitialBalance=pbInitialBalance$amount where pbID = '$pinBatchID';"
-                    echo -e "${BYellow}Update PIN Batch Balance From${Color_Off} ${BRed}vbPinBatch${Color_Off}"
-                    echo
-
-                    mysql -u root --force -D $dbname -e "update vbClientBalance set cbTotalCredit=$amount  where cbAccountID in(select pinAccountID from vbPin where pinBatchID = '$pinBatchID');"
-                    echo -e "${BYellow}Update PIN Batch Initial Balance From${Color_Off} ${BRed}vbPinBatch${Color_Off}"
-                    echo
-                    echo
-
-                    get_switch_version() {
-                    # Set the path to the runiTelSwitchPlusSignaling.sh file
-                    runFile_location="/usr/local/iTelSwitchPlusSignaling$sname/runiTelSwitchPlusSignaling.sh"
-
-                    # Check if the script exists
-                    if [ -f "$runFile_location" ]; then
-                        # Read the content of the script into a variable
-                        runFile=$(<"$runFile_location")
-
-                        # Extract the generic part of the switch command, allowing for variable JDK versions
-                        runFile_content=$(echo "$runFile" | grep -oE '/usr/jdk[^/]+/bin/java -Xmx[0-9]+m -jar iTelSwitchPlusSignaling.jar')
-
-                        #echo "Switch Command: $runFile_content"
-
-                        cd /usr/local/iTelSwitchPlusSignaling$sname/
-
-                        # Run the switch command with the -v option to get the version information
-                        switch_version=$($runFile_content -v 2>&1 | grep -oP 'iTelSwitchPlus Version \K[0-9.]*')
-
-                        if [ -n "$switch_version" ]; then
-                            echo -e "${BYellow}iTelSwitch Version :${Color_Off} ${BRed}$switch_version${Color_Off}"
-                            echo
-                            echo
-                        else
-                            echo -e "${BRed}iTelSwitch Version Information Not Found${Color_Off}"
-                            echo
-                            echo
-                        fi
-                        cd
-                    else
-                        echo -e "${BYellow}[runiTelSwitchPlusSignaling.sh]${Color_Off} ${BRed}File Not Found${Color_Off}"
-                        echo
-                        echo
-                    fi
-                }
-
-                    # Call the function
-                    get_switch_version
-
-                    # Check if the version is 7.0.5 and print OK or Not OK
-                    if [ "$switch_version" == "7.0.5" ]; then
-                        
-                        SQL_QUERY3="SELECT REPLACE(DATE_FORMAT(FROM_UNIXTIME(pbActivationTime/1000), '%Y-%m'), '-', '_') AS formattedDate FROM vbPinBatch WHERE pbID = '$pinBatchID';"
-                        vbPaymentTable=$(mysql -u root -D"$dbname" -s -N -e "$SQL_QUERY3")
-                        echo -e "${BYellow}vbPayment Table Name :${Color_Off} ${BRed}vbPayment_$vbPaymentTable${Color_Off}"
-                        echo
-
-                        BK_table_exists2
-                        
-                        echo -e "${BCyan}Taking Backup Of vbPayment_$vbPaymentTable Table${Color_Off}"
-                        echo
-                        mysql -u root --force -D "$dbname" -e "CREATE TABLE vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d") LIKE vbPayment_$vbPaymentTable; INSERT INTO vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d") (SELECT * FROM vbPayment_$vbPaymentTable);"
-                        echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbPayment_$vbPaymentTable_BK_$(date +"%Y_%m_%d")${Color_Off}"
-                        echo
-
-                        echo
-                        echo -e "${BCyan}Update PIN Batch Balance From vbPayment_$vbPaymentTable${Color_Off}"
-                        echo
-                        mysql -u root --force -D $dbname -e "update vbPayment_$vbPaymentTable set pyAmount=pyAmount$amount where pyAccountID in(select pinAccountID from vbPin where pinBatchID = '$pinBatchID') AND pyRechargeDescription like 'Initial%';"
-                        echo -e "${BYellow}Update PIN Batch Balance From${Color_Off} ${BRed}vbPayment_$vbPaymentTable${Color_Off}"
-                        echo
-
-                        SQL_QUERY6="SELECT pyAmount FROM vbPayment_$vbPaymentTable WHERE pyAccountID IN (SELECT pinAccountID FROM vbPin WHERE pinBatchID = '$pinBatchID') LIMIT 5;"
-                        vbPaymentTableData=$(mysql -u root -D"$dbname" --column-names -s -N -e "$SQL_QUERY6")
-                        echo -e "${BYellow}Updated vbPayment_$vbPaymentTable Table Data For PIN Batch [${Color_off} ${BIRed}$pinBatch${Color_off} ${BYellow}]${Color_Off}"
-                        echo -e "${BRed}$vbPaymentTableData${Color_Off}"
-
-                        echo
-
-                    else
-                        BK_table_exists3
-
-                        echo
-                        echo -e "${BCyan}Taking Backup Of vbPayment Table${Color_Off}"
-                        echo
-                        mysql -u root --force -D $dbname -e "CREATE TABLE vbPayment_`date +"%Y%m%d"` LIKE vbPayment; INSERT INTO vbPayment_`date +"%Y%m%d"` (SELECT * FROM vbPayment);"
-                        echo -e "${BGreen}Table Created${Color_Off} ${BRed}vbPayment_`date +"%Y%m%d"`${Color_Off}"
-                        echo
-
-                        echo
-                        echo -e "${BCyan}Update PIN Batch Balance From vbPayment${Color_Off}"
-                        echo
-                        mysql -u root --force -D $dbname -e "update vbPayment set pyAmount=pyAmount$amount where pyAccountID in(select pinAccountID from vbPin where pinBatchID = '$pinBatchID') AND pyRechargeDescription like 'Initial%';"
-                        echo -e "${BYellow}Update PIN Batch Balance From${Color_Off} ${BRed}vbPayment${Color_Off}"
-                        echo
-
-                        SQL_QUERY7="SELECT pyAmount FROM vbPayment WHERE pyAccountID IN (SELECT pinAccountID FROM vbPin WHERE pinBatchID = '$pinBatchID') LIMIT 5;"
-                        vbPaymentTableData2=$(mysql -u root -D"$dbname" --column-names -s -N -e "$SQL_QUERY7")
-                        echo -e "${BYellow}Updated vbPayment Table Data For PIN Batch [${Color_off} ${BIRed}$pinBatch${Color_off} ${BYellow}]${Color_Off}"
-                        echo -e "${BRed}$vbPaymentTableData2${Color_Off}"
-                        echo
-                    fi
-                    
-                    echo
-                    SQL_QUERY4="SELECT cbBalance FROM vbClientBalance WHERE cbAccountID IN (SELECT pinAccountID FROM vbPin WHERE pinBatchID = '$pinBatchID') LIMIT 5;"
-                    vbClientBalanceUpdate=$(mysql -u root -D"$dbname" --column-names -s -N -e "$SQL_QUERY4")
-                    echo -e "${BYellow}Updated vbClientBalance Table Data For PIN Batch [${Color_off} ${BIRed}$pinBatch${Color_off} ${BYellow}]${Color_Off}"
-                    echo -e "${BRed}$vbClientBalanceUpdate${Color_Off}"
-                    echo
-                    echo
-                done
-            fi
-            
-            sleep 3
-
-            echo -e "${BGreen}Want To Restart iTelSwitch & Tomcat? [y/n] ${Color_Off}"
-            read choice 
-            echo
-
-            if [[ $choice == y ]]
-            then
-            
-            #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*iTelSwitchRestart*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo -e "${BCyan}Restarting Service--${Color_Off}${BRed}(iTelSwitchPlus Signaling)${Color_Off}"
-            echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
-            echo
-                        
             restart_iTelSwitchPlusSignaling
             #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*JakartaTomcatRestart*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             echo -e "${BBlue}*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*${Color_Off}"
