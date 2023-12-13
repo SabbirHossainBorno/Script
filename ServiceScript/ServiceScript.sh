@@ -2223,75 +2223,85 @@ while true; do
 
             if [[ $choice == 'y' ]]
             then
-            echo
-            echo -e "${BRed}!!!!!!!--------------- BE CAREFUL --------------!!!!!!!${Color_Off}"
-            echo
-            echo -e "${BRed}!!!!!!!--- Do Not GZIP More Than 50 At A Time ---!!!!!!!${Color_Off}"
-            echo
-            # Move to the directory
-            cd /var/lib/mysql
-            # Function to validate input range
-            validate_input_range() {
-                local start=$1
-                local last=$2
-                local max_difference=100
-                local start_number=$(echo "$start" | sed 's/^0*//')
-                local last_number=$(echo "$last" | sed 's/^0*//')
-                local difference=$((last_number - start_number + 1))
-                if [[ $difference -gt $max_difference ]]; then
-                    echo -e "${BRed}You Can't GZIP More Than $max_difference (mysqld-bin) Files At A Time.${Color_Off}"
-                    echo
-                    return 1
-                fi
-                if [[ $start_number -gt $last_number ]]; then
-                    echo -e "${BRed}Start File Number Must Be Less Than OR Equal To The Last File Number.${Color_Off}"
-                    echo
-                    return 1
-                fi
-                return 0
-            }
-            # List non-gzipped files excluding mysqld-bin.index and the last file
-            echo -e "${BYellow}Available NON-GZIPPED (mysqld-bin) Files :${Color_Off}"
-            echo
-            non_gzipped_files=$(ls mysqld-bin.* | grep -vE '(\.gz$|mysqld-bin\.index$)' | awk -F'.' '{print $0}' | head -n -1)
-            echo "$non_gzipped_files"
-            echo
-            # Read start and last file numbers from user input with validation
-            while true; do
-                echo -e "${BGreen}Enter Start (mysqld-bin) File Number Just (${Color_Off}${BYellow}e.g., 325${Color_Off}${BGreen}): ${Color_Off}"
-                read -r start_number
                 echo
-                echo -e "${BGreen}Enter Last (mysqld-bin) File Number Just(${Color_Off}${BYellow}e.g., 424${Color_Off}${BGreen}): ${Color_Off}"
-                read -r last_number
+                echo -e "${BRed}!!!!!!!--------------- BE CAREFUL --------------!!!!!!!${Color_Off}"
                 echo
+                echo -e "${BRed}!!!!!!!--- Do Not GZIP More Than 50 At A Time ---!!!!!!!${Color_Off}"
+                echo
+                # Move to the directory
+                cd /var/lib/mysql
+                # Function to validate input range
+                validate_input_range() {
+                    local start=$1
+                    local last=$2
+                    local max_difference=100
+                    local start_number=$(echo "$start" | sed 's/^0*//')
+                    local last_number=$(echo "$last" | sed 's/^0*//')
+                    local difference=$((last_number - start_number + 1))
+                    if [[ $difference -gt $max_difference ]]; then
+                        echo -e "${BRed}You Can't GZIP More Than $max_difference (mysqld-bin) Files At A Time.${Color_Off}"
+                        echo
+                        return 1
+                    fi
+                    if [[ $start_number -gt $last_number ]]; then
+                        echo -e "${BRed}Start File Number Must Be Less Than OR Equal To The Last File Number.${Color_Off}"
+                        echo
+                        return 1
+                    fi
+                    return 0
+                }
 
-                if ! [[ "$start_number" =~ ^[0-9]+$ ]] || ! [[ "$last_number" =~ ^[0-9]+$ ]]; then
+                # List non-gzipped files excluding mysqld-bin.index and the last file
+                non_gzipped_files=$(ls mysqld-bin.* | grep -vE '(\.gz$|mysqld-bin\.index$)' | awk -F'.' '{print $0}' | head -n -1)
+
+                # Check if there are any non-gzipped files
+                if [ -z "$non_gzipped_files" ]; then
                     echo
-                    echo -e "${BRed}Invalid Input. Please Enter Valid Numbers.${Color_Off}"
+                    echo -e "${BRed}No NON-GZIPPED (mysqld-bin) Files Avaiable!${Color_Off} ${BYellow}[SKIPPING]${Color_Off}"
                     echo
                 else
-                    if validate_input_range "$start_number" "$last_number"; then
-                        break
-                    fi
-                fi
-            done
-            # Loop through file numbers and gzip each non-gzipped file
-            for ((i=start_number; i<=last_number; i++)); do
-                current_file="mysqld-bin.$(printf "%06d" $i)"
-                if [ -f "$current_file" ] && ! [[ $current_file =~ \.gz$ ]]; then
-                    gzip "$current_file"
+                    # List non-gzipped files excluding mysqld-bin.index and the last file
+                    echo -e "${BYellow}Available NON-GZIPPED (mysqld-bin) Files :${Color_Off}"
                     echo
-                    echo -e "${BGreen}Gzipping Completed For :${Color_Off} ${BRed}$current_file${Color_Off}"
+                    echo "$non_gzipped_files"
+                    echo
+                    # Read start and last file numbers from user input with validation
+                    while true; do
+                        echo -e "${BGreen}Enter Start (mysqld-bin) File Number Just (${Color_Off}${BYellow}e.g., 325${Color_Off}${BGreen}): ${Color_Off}"
+                        read -r start_number
+                        echo
+                        echo -e "${BGreen}Enter Last (mysqld-bin) File Number Just(${Color_Off}${BYellow}e.g., 424${Color_Off}${BGreen}): ${Color_Off}"
+                        read -r last_number
+                        echo
+
+                        if ! [[ "$start_number" =~ ^[0-9]+$ ]] || ! [[ "$last_number" =~ ^[0-9]+$ ]]; then
+                            echo
+                            echo -e "${BRed}Invalid Input. Please Enter Valid Numbers.${Color_Off}"
+                            echo
+                        else
+                            if validate_input_range "$start_number" "$last_number"; then
+                                break
+                            fi
+                        fi
+                    done
+                    # Loop through file numbers and gzip each non-gzipped file
+                    for ((i=start_number; i<=last_number; i++)); do
+                        current_file="mysqld-bin.$(printf "%06d" $i)"
+                        if [ -f "$current_file" ] && ! [[ $current_file =~ \.gz$ ]]; then
+                            gzip "$current_file"
+                            echo
+                            echo -e "${BGreen}Gzipping Completed For :${Color_Off} ${BRed}$current_file${Color_Off}"
+                        fi
+                    done
+                        echo
+                        echo -e "${BGreen}Gzipping Completed For NON-GZIPPED (mysqld-bin) Files Between${Color_Off} ${BRed}$start_number${Color_Off} ${BGreen}&${Color_Off} ${BRed}$last_number${Color_Off}${BGreen}.${Color_Off}"
+                        echo
+                        echo
+                        ls mysqld-bin.*
+                        echo
+                        echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
+                        echo
                 fi
-            done
-                echo
-                echo -e "${BGreen}Gzipping Completed For NON-GZIPPED (mysqld-bin) Files Between${Color_Off} ${BRed}$start_number${Color_Off} ${BGreen}&${Color_Off} ${BRed}$last_number${Color_Off}${BGreen}.${Color_Off}"
-                echo
-                echo
-                ls mysqld-bin.*
-                echo
-                echo -e "${BGreen}Your HDD Current Usage : ${Color_Off}${BCyan}`df -lh | awk '{if ($6 == "/") { print $5 }}'` ${Color_Off}"
-                echo
             else
                 echo
                 echo -e "${BBlue}Thanks For Your Choice!!${Color_Off}"
@@ -3870,10 +3880,20 @@ while true; do
             echo -e "${BGreen}Enter PIN BATCH Name : ${Color_Off}"
             read -a pinBatch_array
             echo
-            echo -e "${BIRed}N.B: Amount Will Be Like [+10/-10]${Color_Off}"
-            echo -e "${BGreen}Enter The Amount : ${Color_Off}"
-            read amount
-            echo
+            while true; do
+                echo -e "${BIRed}N.B: Amount Will Be Like [+10/-10]${Color_Off}"
+                echo -e "${BGreen}Enter The Amount : ${Color_Off}"
+                read amount
+                echo
+
+                # Check if the input starts with '+' or '-'
+                if [[ $amount =~ ^[+-][0-9]+$ ]]; then
+                    break  # Break the loop if the input is valid
+                else
+                    echo -e "${BRed}Invalid Input! You Must Use '+' OR '-' With The Amount${Color_Off}"
+                    echo
+                fi
+            done
             if [[ ${#pinBatch_array[@]} -eq 0 ]]; then
                 echo -e "${BYellow}Skipping PIN Batch Balance Update Process${Color_Off}"
                 echo
