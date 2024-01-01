@@ -1057,13 +1057,13 @@ authenticate
                     cd "/usr/local/ByteSaverSignalConverter$opcode/" && rm -f SignalingProxy.log.*
 
                     # Delete ByteSaver Signal log directories
-                    cd "/usr/local/ByteSaverSignalConverter$opcode/logs/" && rm -rf "$(date "+%Y")"*
+                    cd "/usr/local/ByteSaverSignalConverter$opcode/logs/" && rm -rf 2023* "$(date "+%Y")"*
 
                     # Delete ByteSaver Media log files
                     cd "/usr/local/ByteSaverMediaProxy$opcode/" && rm -f MediaProxy.log.*
 
                     # Delete ByteSaver Media log directories
-                    cd "/usr/local/ByteSaverMediaProxy$opcode/logs/" && rm -rf "$(date "+%Y")"*
+                    cd "/usr/local/ByteSaverMediaProxy$opcode/logs/" && rm -rf 2023* "$(date "+%Y")"*
 
                     # Update debug to '0' in bytesaver server.cfg file
                     sed -i 's/^debug=.*/debug=0/' "/usr/local/ByteSaverSignalConverter$opcode/server.cfg"
